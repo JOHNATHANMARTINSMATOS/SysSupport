@@ -1,45 +1,55 @@
-// listErrors.js
+document.addEventListener('DOMContentLoaded', () => {
+    fetchErrors();
+});
 
-const errorsTable = document.getElementById('errorsTable').getElementsByTagName('tbody')[0];
-const messageDiv = document.getElementById('message');
-
-async function fetchErrors() {
-    try {
-        const response = await fetch('/api/errors');
-        
-        if (response.ok) {
-            const errors = await response.json();
-            
-            errorsTable.innerHTML = '';
+function fetchErrors() {
+    fetch('/api/errors')
+        .then(response => response.json())
+        .then(errors => {
+            const errorsTableBody = document.querySelector('#errorsTable tbody');
+            errorsTableBody.innerHTML = ''; 
 
             errors.forEach(error => {
-                const row = errorsTable.insertRow();
-
-                row.insertCell(0).textContent = error.id;
-                row.insertCell(1).textContent = error.title;
-                row.insertCell(2).textContent = error.category;
-                row.insertCell(3).textContent = error.subcategory || '-';
-                row.insertCell(4).textContent = error.description;
-                row.insertCell(5).textContent = error.responsible || '-';
-                row.insertCell(6).textContent = error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : '-';
-                
-                const imageCell = row.insertCell(7);
-                if (error.image) {
-                    const imgLink = document.createElement('a');
-                    imgLink.href = error.image;
-                    imgLink.target = '_blank';
-                    imgLink.textContent = 'Ver Imagem';
-                    imageCell.appendChild(imgLink);
-                } else {
-                    imageCell.textContent = '-';
-                }
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${error.id}</td>
+                    <td>${error.title}</td>
+                    <td>${error.category}</td>
+                    <td>${error.subcategory}</td>
+                    <td>${error.description.substring(0, 20)}...</td>
+                    <td>${error.responsible}</td>
+                    <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
+                    <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
+                `;
+                row.addEventListener('click', () => showErrorModal(error));
+                errorsTableBody.appendChild(row);
             });
-        } else {
-            messageDiv.textContent = 'Erro ao buscar a lista de erros.';
-        }
-    } catch (error) {
-        messageDiv.textContent = 'Ocorreu um erro ao buscar os erros: ' + error.message;
-    }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar erros:', error);
+        });
 }
 
-window.onload = fetchErrors;
+function showErrorModal(error) {
+    document.getElementById('modalTitle').textContent = error.title;
+    document.getElementById('modalCategory').textContent = error.category;
+    document.getElementById('modalSubcategory').textContent = error.subcategory;
+    document.getElementById('modalDescription').textContent = error.description;
+    document.getElementById('modalResponsible').textContent = error.responsible;
+    document.getElementById('modalResolutionDate').textContent = error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : 'N/A';
+    
+    const modalImage = document.getElementById('modalImage');
+    if (error.image) {
+        modalImage.src = error.image;
+        modalImage.style.display = 'block';
+    } else {
+        modalImage.style.display = 'none';
+    }
+
+    // Exibe o modal
+    document.getElementById('errorModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('errorModal').style.display = 'none';
+}
