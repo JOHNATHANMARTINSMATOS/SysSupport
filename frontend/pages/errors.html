@@ -78,7 +78,7 @@
 
                 if (response.ok) {
                     const result = await response.json();
-                    document.getElementById('message').textContent = result.message;
+                    document.getElementById('message').textContent = result.message || 'Erro cadastrado com sucesso!';
                     console.log('Cadastro realizado com sucesso:', result);
                     this.reset(); // Reseta o formulário após o envio
                 } else {
