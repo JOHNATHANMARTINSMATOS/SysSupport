@@ -48,6 +48,10 @@ function fetchErrors() {
 
             errors.forEach(error => {
                 const row = document.createElement('tr');
+                
+                // Atribui o evento de clique à linha para abrir o modal com os detalhes
+                row.addEventListener('click', () => showErrorModal(error.id));
+                
                 row.innerHTML = `
                     <td>${error.id}</td>
                     <td>${error.title}</td>
@@ -57,11 +61,6 @@ function fetchErrors() {
                     <td>${error.responsible}</td>
                     <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
                     <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
-                    <td>
-                        <button onclick="showErrorModal(${error.id})">Ver</button>
-                        <button onclick="deleteError(${error.id})">Excluir</button>
-                        <button onclick="editError(${error.id})">Editar</button>
-                    </td>
                 `;
                 errorsTableBody.appendChild(row);
             });
@@ -82,6 +81,10 @@ function applyFilters() {
 
             errors.forEach(error => {
                 const row = document.createElement('tr');
+                
+                // Atribui o evento de clique à linha para abrir o modal com os detalhes
+                row.addEventListener('click', () => showErrorModal(error.id));
+                
                 row.innerHTML = `
                     <td>${error.id}</td>
                     <td>${error.title}</td>
@@ -91,11 +94,6 @@ function applyFilters() {
                     <td>${error.responsible}</td>
                     <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
                     <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
-                    <td>
-                        <button onclick="showErrorModal(${error.id})">Ver</button>
-                        <button onclick="deleteError(${error.id})">Excluir</button>
-                        <button onclick="editError(${error.id})">Editar</button>
-                    </td>
                 `;
                 errorsTableBody.appendChild(row);
             });
