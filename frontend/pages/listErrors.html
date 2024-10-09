@@ -31,16 +31,24 @@
             </ul>
         </nav>
     </header>
+    
     <main class="table">
         <h2>Lista de Erros</h2>
+
         <!-- Formulário de Filtros -->
         <div class="filter-form">
-            <input type="text" id="filterCategory" placeholder="Buscar por Categoria">
-            <input type="text" id="filterSubcategory" placeholder="Buscar por Subcategoria">
+            <select id="categoryFilter" onchange="loadSubcategories()">
+                <option value="">Buscar por Categoria</option>
+            </select>
+            <select id="subcategoryFilter">
+                <option value="">Buscar por Subcategoria</option>
+            </select>
             <input type="text" id="filterDescription" placeholder="Buscar na Descrição">
             <button onclick="applyFilters()">Filtrar</button>
             <button onclick="clearFilters()">Limpar Filtros</button>
         </div>
+
+        <!-- Tabela de Erros -->
         <div class="table-container">
             <table id="errorsTable">
                 <thead>
@@ -53,33 +61,33 @@
                         <th>Responsável</th>
                         <th>Data de Resolução</th>
                         <th>Imagem</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Dados serão inseridos aqui pelo JavaScript -->
+                    <!-- Dados serão carregados aqui -->
                 </tbody>
             </table>
         </div>
-        <div id="message"></div>
 
-       <!-- Modal para exibir a descrição completa do erro -->
-    <div id="errorModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p><strong>Categoria:</strong> <span id="modalCategory"></span></p>
-            <p><strong>Subcategoria:</strong> <span id="modalSubcategory"></span></p>
-            <p><strong>Descrição:</strong></p>
-            <p id="modalDescription"></p>
-            <p><strong>Responsável:</strong> <span id="modalResponsible"></span></p>
-            <p><strong>Data de Resolução:</strong> <span id="modalResolutionDate"></span></p>
-            <img id="modalImage" src="" alt="Imagem do Erro" style="display: none; width: 100%; max-width: 300px;">
-            <button onclick="deleteError()">Excluir</button>
-            <button onclick="editError()">Editar</button>
+        <!-- Modal de Edição e Exclusão -->
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle"></h2>
+                <p><strong>Categoria:</strong> <span id="modalCategory"></span></p>
+                <p><strong>Subcategoria:</strong> <span id="modalSubcategory"></span></p>
+                <p><strong>Descrição:</strong></p>
+                <p id="modalDescription"></p>
+                <p><strong>Responsável:</strong> <span id="modalResponsible"></span></p>
+                <p><strong>Data de Resolução:</strong> <span id="modalResolutionDate"></span></p>
+                <img id="modalImage" src="" alt="Imagem do Erro" style="display: none; width: 100%; max-width: 300px;">
+                <button onclick="deleteError()">Excluir</button>
+                <button onclick="editError()">Editar</button>
+            </div>
         </div>
-    </div>
-
     </main>
+
     <footer>
         <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
     </footer>

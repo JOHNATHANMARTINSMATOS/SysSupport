@@ -1,6 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchErrors();
+    loadCategories();
 });
+
+function loadCategories() {
+    fetch('/api/errors/categories')
+        .then(response => response.json())
+        .then(categories => {
+            const categorySelect = document.getElementById('categoryFilter');
+            categorySelect.innerHTML = '<option value="">Buscar por Categoria</option>';
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro ao carregar categorias:', error));
+}
+
+function loadSubcategories() {
+    const categoryId = document.getElementById('categoryFilter').value;
+    const subcategorySelect = document.getElementById('subcategoryFilter');
+    subcategorySelect.innerHTML = '<option value="">Buscar por Subcategoria</option>';
+
+    if (categoryId) {
+        fetch(`/api/errors/subcategories?category=${categoryId}`)
+            .then(response => response.json())
+            .then(subcategories => {
+                subcategories.forEach(subcategory => {
+                    const option = document.createElement('option');
+                    option.value = subcategory.id;
+                    option.textContent = subcategory.name;
+                    subcategorySelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar subcategorias:', error));
+    }
+}
 
 function fetchErrors() {
     fetch('/api/errors')
@@ -29,8 +66,39 @@ function fetchErrors() {
                 errorsTableBody.appendChild(row);
             });
         })
-        .catch(error => {
-            console.error('Erro ao buscar erros:', error);
+        .catch(error => console.error('Erro ao buscar erros:', error));
+}
+
+function applyFilters() {
+    const category = document.getElementById('categoryFilter').value;
+    const subcategory = document.getElementById('subcategoryFilter').value;
+    const description = document.getElementById('filterDescription').value.toLowerCase();
+
+    fetch(`/api/errors?category=${category}&subcategory=${subcategory}&description=${description}`)
+        .then(response => response.json())
+        .then(errors => {
+            const errorsTableBody = document.querySelector('#errorsTable tbody');
+            errorsTableBody.innerHTML = ''; 
+
+            errors.forEach(error => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${error.id}</td>
+                    <td>${error.title}</td>
+                    <td>${error.category}</td>
+                    <td>${error.subcategory}</td>
+                    <td>${error.description.substring(0, 20)}...</td>
+                    <td>${error.responsible}</td>
+                    <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
+                    <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
+                    <td>
+                        <button onclick="showErrorModal(${error.id})">Ver</button>
+                        <button onclick="deleteError(${error.id})">Excluir</button>
+                        <button onclick="editError(${error.id})">Editar</button>
+                    </td>
+                `;
+                errorsTableBody.appendChild(row);
+            });
         });
 }
 
@@ -62,7 +130,8 @@ function closeModal() {
     document.getElementById('errorModal').style.display = 'none';
 }
 
-function deleteError(id) {
+function deleteError() {
+    const id = document.getElementById('errorModal').dataset.errorId;
     if (confirm('Tem certeza de que deseja excluir este erro?')) {
         fetch(`/api/errors/${id}`, { method: 'DELETE' })
             .then(response => {
@@ -77,7 +146,8 @@ function deleteError(id) {
     }
 }
 
-function editError(id) {
+function editError() {
+    const id = document.getElementById('errorModal').dataset.errorId;
     const newDescription = prompt('Digite a nova descrição:');
     if (newDescription) {
         fetch(`/api/errors/${id}`, {
@@ -93,50 +163,4 @@ function editError(id) {
         })
         .catch(error => console.error('Erro ao atualizar:', error));
     }
-}
-
-function applyFilters() {
-    const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
-    const subcategoryFilter = document.getElementById('subcategoryFilter').value.toLowerCase();
-    const descriptionFilter = document.getElementById('descriptionFilter').value.toLowerCase();
-
-    fetch('/api/errors')
-        .then(response => response.json())
-        .then(errors => {
-            const filteredErrors = errors.filter(error => 
-                error.category.toLowerCase().includes(categoryFilter) &&
-                error.subcategory.toLowerCase().includes(subcategoryFilter) &&
-                error.description.toLowerCase().includes(descriptionFilter)
-            );
-
-            const errorsTableBody = document.querySelector('#errorsTable tbody');
-            errorsTableBody.innerHTML = ''; 
-
-            filteredErrors.forEach(error => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${error.id}</td>
-                    <td>${error.title}</td>
-                    <td>${error.category}</td>
-                    <td>${error.subcategory}</td>
-                    <td>${error.description.substring(0, 20)}...</td>
-                    <td>${error.responsible}</td>
-                    <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
-                    <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
-                    <td>
-                        <button onclick="showErrorModal(${error.id})">Ver</button>
-                        <button onclick="deleteError(${error.id})">Excluir</button>
-                        <button onclick="editError(${error.id})">Editar</button>
-                    </td>
-                `;
-                errorsTableBody.appendChild(row);
-            });
-        });
-}
-
-function clearFilters() {
-    document.getElementById('categoryFilter').value = '';
-    document.getElementById('subcategoryFilter').value = '';
-    document.getElementById('descriptionFilter').value = '';
-    fetchErrors();
 }
