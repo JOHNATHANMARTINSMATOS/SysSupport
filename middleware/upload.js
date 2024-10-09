@@ -4,7 +4,7 @@ const path = require('path');
 // Configuração de armazenamento
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '/uploads'); // Use o caminho absoluto fornecido pelo Railway
+        cb(null, '/uploads');
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // Limite de 5 MB
+    limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         const fileTypes = /jpeg|jpg|png|pdf|doc|txt/;
         const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
