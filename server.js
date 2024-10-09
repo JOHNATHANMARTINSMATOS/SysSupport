@@ -5,15 +5,6 @@ const db = require('./models');
 require('dotenv').config();
 
 const app = express();
-// Adicionando o Helmet com configurações de Content Security Policy
-app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],           // Permitir carregamento de recursos do mesmo domínio
-        fontSrc: ["'self'", "https://fonts.gstatic.com"] // Permitir fontes de URLs específicas
-      }
-    }
-  }));
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
