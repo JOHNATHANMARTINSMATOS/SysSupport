@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>SysSupport - Lista de Erros</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>SysSupport</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="errors.html">Erros</a></li>
+                <li><a href="manuals.html">Manuais</a></li>
+                <li><a href="scripts.html">Scripts SQL</a></li>
+                <li><a href="regimes.html">Regimes Tributários</a></li>
+                <li><a href="suggestions.html">Sugestões</a></li>
+                <li class="dropdown">
+                    <a href="#">Gestão Tributária</a>
+                    <ul class="dropdown-content">
+                        <li><a href="cst.html">CST</a></li>
+                        <li><a href="cfop.html">CFOP</a></li>
+                        <li><a href="ipi.html">IPI</a></li>
+                        <li><a href="cofins.html">COFINS</a></li>
+                        <li><a href="pis.html">PIS</a></li>
+                    </ul>
+                </li>
+                <li><a href="instructions.html">Instruções</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Lista de Erros</h2>
+        <table id="errorsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Categoria</th>
+                    <th>Subcategoria</th>
+                    <th>Descrição</th>
+                    <th>Responsável</th>
+                    <th>Data de Resolução</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados serão inseridos aqui pelo JavaScript -->
+            </tbody>
+        </table>
+        <div id="message"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="listErrors.js"></script>
+</body>
+</html>
