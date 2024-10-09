@@ -7,8 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+app.use('/uploads', express.static('/uploads'));
 const PORT = process.env.PORT || 5000;
 
 // Conectar ao banco de dados PostgreSQL
