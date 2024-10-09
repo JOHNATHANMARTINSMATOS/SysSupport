@@ -1,10 +1,25 @@
-const mongoose = require('mongoose');
+// models/suggestion.js
 
-const SuggestionSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    category: { type: String, required: true },
-    description: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('Suggestion', SuggestionSchema);
+module.exports = (sequelize, DataTypes) => {
+    const Suggestion = sequelize.define('Suggestion', {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      category: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      description: {
+        type: DataTypes.TEXT, // Usando TEXT para permitir descrições mais longas
+        allowNull: false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+  
+    return Suggestion;
+  };
+  

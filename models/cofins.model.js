@@ -1,10 +1,26 @@
-const mongoose = require('mongoose');
+// models/cofins.js
 
-const CofinsSchema = new mongoose.Schema({
-    code: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    rate: { type: Number, required: true },  // Campo para alíquota
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('COFINS', CofinsSchema);
+module.exports = (sequelize, DataTypes) => {
+    const COFINS = sequelize.define('COFINS', {
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      rate: {
+        type: DataTypes.FLOAT, // Campo para alíquota, utilizando FLOAT para decimais
+        allowNull: false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+  
+    return COFINS;
+  };
+  

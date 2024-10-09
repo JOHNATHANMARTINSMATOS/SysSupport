@@ -1,11 +1,27 @@
-const mongoose = require('mongoose');
+// models/manual.js
 
-const ManualSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    category: { type: String, required: true },
-    description: { type: String },
-    file: { type: String },
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('Manual', ManualSchema);
+module.exports = (sequelize, DataTypes) => {
+    const Manual = sequelize.define('Manual', {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      category: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      description: {
+        type: DataTypes.TEXT // Usando TEXT para permitir descrições longas
+      },
+      file: {
+        type: DataTypes.STRING // Armazena o caminho para o arquivo anexado
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+  
+    return Manual;
+  };
+  

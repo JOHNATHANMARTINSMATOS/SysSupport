@@ -1,10 +1,26 @@
-const mongoose = require('mongoose');
+// models/ipi.js
 
-const IpiSchema = new mongoose.Schema({
-    code: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    rate: { type: Number, required: true },  // Campo para alíquota
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('IPI', IpiSchema);
+module.exports = (sequelize, DataTypes) => {
+    const IPI = sequelize.define('IPI', {
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      rate: {
+        type: DataTypes.FLOAT, // Usando FLOAT para valores decimais, como alíquotas
+        allowNull: false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+  
+    return IPI;
+  };
+  

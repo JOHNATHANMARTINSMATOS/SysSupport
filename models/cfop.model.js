@@ -1,9 +1,22 @@
-const mongoose = require('mongoose');
+// models/cfop.js
 
-const CfopSchema = new mongoose.Schema({
-    code: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('CFOP', CfopSchema);
+module.exports = (sequelize, DataTypes) => {
+    const CFOP = sequelize.define('CFOP', {
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+    
+    return CFOP;
+  };
+  

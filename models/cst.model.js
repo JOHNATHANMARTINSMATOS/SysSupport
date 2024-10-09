@@ -1,9 +1,22 @@
-const mongoose = require('mongoose');
+// models/cst.js
 
-const CstSchema = new mongoose.Schema({
-    code: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('CST', CstSchema);
+module.exports = (sequelize, DataTypes) => {
+    const CST = sequelize.define('CST', {
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+  
+    return CST;
+  };
+  

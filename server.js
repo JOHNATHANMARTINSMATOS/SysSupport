@@ -1,7 +1,7 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const db = require('./models');
 require('dotenv').config();
 
 const app = express();
@@ -10,45 +10,28 @@ app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/syssupport';
 
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch((error) => console.error('Error connecting to MongoDB:', error));
+// Conectar ao banco de dados PostgreSQL
+db.sequelize.authenticate()
+  .then(() => {
+    console.log('Connected to PostgreSQL');
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database:', error);
+  });
 
-    // Servindo o arquivo index.html na raiz do servidor
+// Servindo a página inicial
 app.use(express.static(path.join(__dirname, 'frontend')));
-
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
-// Importando as rotas
-const errorRoutes = require('./routes/errors');
-const manualRoutes = require('./routes/manuals');
-const scriptRoutes = require('./routes/scripts');
-const regimeRoutes = require('./routes/regimes');
-const suggestionRoutes = require('./routes/suggestions');
-const cstRoutes = require('./routes/cst');
-const cfopRoutes = require('./routes/cfop');
-const ipiRoutes = require('./routes/ipi');
-const cofinsRoutes = require('./routes/cofins');
-const pisRoutes = require('./routes/pis');
-const instructionRoutes = require('./routes/instructions');
-
-// Registrando as rotas
-app.use('/api/errors', errorRoutes);
-app.use('/api/manuals', manualRoutes);
-app.use('/api/scripts', scriptRoutes);
-app.use('/api/regimes', regimeRoutes);
-app.use('/api/suggestions', suggestionRoutes);
-app.use('/api/cst', cstRoutes);
-app.use('/api/cfop', cfopRoutes);
-app.use('/api/ipi', ipiRoutes);
-app.use('/api/cofins', cofinsRoutes);
-app.use('/api/pis', pisRoutes);
-app.use('/api/instructions', instructionRoutes);
+// Importando e registrando as rotas
+const routes = ['errors', 'manuals', 'scripts', 'regimes', 'suggestions', 'cst', 'cfop', 'ipi', 'cofins', 'pis', 'instructions'];
+routes.forEach(route => {
+  app.use(`/api/${route}`, require(`./routes/${route}`));
+});
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

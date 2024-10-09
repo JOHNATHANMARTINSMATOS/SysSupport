@@ -1,10 +1,26 @@
-const mongoose = require('mongoose');
+// models/pis.js
 
-const PisSchema = new mongoose.Schema({
-    code: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    rate: { type: Number, required: true },  // Campo para alíquota
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('PIS', PisSchema);
+module.exports = (sequelize, DataTypes) => {
+    const PIS = sequelize.define('PIS', {
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      rate: {
+        type: DataTypes.FLOAT, // Usando FLOAT para permitir valores decimais (alíquota)
+        allowNull: false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+  
+    return PIS;
+  };
+  

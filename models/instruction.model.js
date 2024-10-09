@@ -1,10 +1,25 @@
-const mongoose = require('mongoose');
+// models/instruction.js
 
-const InstructionSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    category: { type: String, required: true },
-    description: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('Instruction', InstructionSchema);
+module.exports = (sequelize, DataTypes) => {
+    const Instruction = sequelize.define('Instruction', {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      category: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      description: {
+        type: DataTypes.TEXT, // Utilizamos TEXT para permitir descrições longas
+        allowNull: false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+      }
+    });
+  
+    return Instruction;
+  };
+  
