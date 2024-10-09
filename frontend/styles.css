@@ -141,39 +141,19 @@ footer {
 footer p {
     margin: 0;
 }
-/* Estilo do Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
+/* Container para a tabela */
+.table-container {
     width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0 2rem; /* Aumenta o espaço interno para os lados */
+    overflow-x: auto;
+    margin: 20px 0;
 }
 
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
 /* Estilo da Tabela */
 table {
-    width: 100%;
+    width: 90%;
+    min-width: 800px; /* Define uma largura mínima */
     border-collapse: collapse;
-    margin: 20px 0;
     font-size: 16px;
     font-family: Arial, sans-serif;
 }
@@ -206,8 +186,14 @@ table img {
     width: 50px;
     height: auto;
 }
-
-/* Estilo para o Modal */
+.table{
+    max-width: 90%; /* Aumente a largura máxima */
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/* Modal para ver a descrição completa */
 .modal {
     display: none;
     position: fixed;
@@ -242,7 +228,6 @@ table img {
     text-decoration: none;
     cursor: pointer;
 }
-
 
 /* Responsividade */
 @media (max-width: 768px) {
