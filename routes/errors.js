@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const Error = db.Error;
+const upload = require('../middleware/upload'); // Importa o middleware de upload
 
 // Listar todos os erros
 router.get('/', async (req, res) => {
@@ -13,16 +14,26 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Criar um novo erro
-router.post('/', async (req, res) => {
-  const { title, category, subcategory, description, responsible, resolutionDate, image } = req.body;
-  try {
-    const newError = await Error.create({ title, category, subcategory, description, responsible, resolutionDate, image });
-    res.status(201).json(newError);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+// // Rota para criar um novo erro com upload de imagem
+router.post('/', upload.single('image'), async (req, res) => {
+    const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
+    const image = req.file ? req.file.path : null;
+  
+    try {
+      const newError = await Error.create({
+        title,
+        category,
+        subcategory,
+        description,
+        responsible,
+        resolutionDate,
+        image
+      });
+      res.status(201).json(newError);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
 
 // Atualizar um erro
 router.put('/:id', async (req, res) => {
