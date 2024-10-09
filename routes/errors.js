@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const Error = db.Error;
-const upload = require('../middleware/upload'); // Middleware para upload de arquivos
+const upload = require('../middleware/upload');
 
 // Listar todos os erros
 router.get('/', async (req, res) => {
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Rota para criar um novo erro com upload de imagem
+// Criar um novo erro com upload de imagem
 router.post('/', upload.single('image'), async (req, res) => {
   const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : null;
@@ -30,23 +30,30 @@ router.post('/', upload.single('image'), async (req, res) => {
       image
     });
     
-    // Envia uma mensagem de sucesso
     res.status(201).json({ message: 'Erro cadastrado com sucesso!' });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-module.exports = router;
+// Atualizar um erro existente
+router.put('/:id', upload.single('image'), async (req, res) => {
+  const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
 
-
-// Atualizar um erro
-router.put('/:id', async (req, res) => {
   try {
     const error = await Error.findByPk(req.params.id);
     if (error) {
-      await error.update(req.body);
-      res.json({ message: 'Erro atualizado com sucesso!'});
+      await error.update({
+        title,
+        category,
+        subcategory,
+        description,
+        responsible,
+        resolutionDate,
+        image
+      });
+      res.json({ message: 'Erro atualizado com sucesso!' });
     } else {
       res.status(404).json({ message: 'Erro não encontrado' });
     }
@@ -55,7 +62,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Deletar um erro
+// Deletar um erro existente
 router.delete('/:id', async (req, res) => {
   try {
     const error = await Error.findByPk(req.params.id);
