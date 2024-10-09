@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const COFINS = require('../models/cofins.model');
+const COFINS = require('../models/cofins.model'); // Verifique se o caminho do modelo está correto
 
 // Listar todos os COFINS
 router.get('/', async (req, res) => {

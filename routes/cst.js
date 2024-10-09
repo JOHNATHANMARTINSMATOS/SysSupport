@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const CST = require('../models/cst.model');
+const CST = require('../models/cst.model'); // Certifique-se de que o modelo CST está no caminho correto
 
 // Listar todos os CSTs
 router.get('/', async (req, res) => {
@@ -47,4 +47,4 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router; // Certifique-se de que o arquivo termina com esta linha

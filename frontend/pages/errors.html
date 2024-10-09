@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>SysSupport - Erros</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>SysSupport</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="errors.html">Erros</a></li>
+                <li><a href="manuals.html">Manuais</a></li>
+                <li><a href="scripts.html">Scripts SQL</a></li>
+                <li><a href="regimes.html">Regimes Tributários</a></li>
+                <li><a href="suggestions.html">Sugestões</a></li>
+                <li class="dropdown">
+                    <a href="#">Gestão Tributária</a>
+                    <ul class="dropdown-content">
+                        <li><a href="cst.html">CST</a></li>
+                        <li><a href="cfop.html">CFOP</a></li>
+                        <li><a href="ipi.html">IPI</a></li>
+                        <li><a href="cofins.html">COFINS</a></li>
+                        <li><a href="pis.html">PIS</a></li>
+                    </ul>
+                </li>
+                <li><a href="instructions.html">Instruções</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Gestão de Erros</h2>
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <label for="title">Título do Erro:</label>
+            <input type="text" id="title" name="title" required><br><br>
+            
+            <label for="category">Categoria:</label>
+            <input type="text" id="category" name="category" required><br><br>
+            
+            <label for="subcategory">Subcategoria:</label>
+            <input type="text" id="subcategory" name="subcategory"><br><br>
+            
+            <label for="description">Descrição:</label><br>
+            <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+            
+            <label for="responsible">Pessoa Responsável:</label>
+            <input type="text" id="responsible" name="responsible"><br><br>
+            
+            <label for="resolutionDate">Data de Resolução:</label>
+            <input type="date" id="resolutionDate" name="resolutionDate"><br><br>
+            
+            <label for="image">Anexar Imagem:</label>
+            <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png"><br><br>
+            
+            <input type="submit" value="Cadastrar Erro">
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>

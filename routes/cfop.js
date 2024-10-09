@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const CFOP = require('../models/cfop.model');
+const CFOP = require('../models/cfop.model'); // Verifique se o caminho do modelo está correto
 
 // Listar todos os CFOPs
 router.get('/', async (req, res) => {
