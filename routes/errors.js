@@ -14,26 +14,28 @@ router.get('/', async (req, res) => {
   }
 });
 
-// // Rota para criar um novo erro com upload de imagem
+// Rota para criar um novo erro com upload de imagem
 router.post('/', upload.single('image'), async (req, res) => {
-    const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
-    const image = req.file ? req.file.path : null;
-  
-    try {
-      const newError = await Error.create({
-        title,
-        category,
-        subcategory,
-        description,
-        responsible,
-        resolutionDate,
-        image
-      });
-      res.status(201).json(newError);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  });
+  const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
+  const image = req.file ? req.file.path : null;
+
+  try {
+    const newError = await Error.create({
+      title,
+      category,
+      subcategory,
+      description,
+      responsible,
+      resolutionDate,
+      image
+    });
+    
+    // Envia uma mensagem de sucesso e uma pequena confirmação
+    res.status(201).json({ message: 'Erro cadastrado com sucesso!'});
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 // Atualizar um erro
 router.put('/:id', async (req, res) => {
@@ -41,9 +43,9 @@ router.put('/:id', async (req, res) => {
     const error = await Error.findByPk(req.params.id);
     if (error) {
       await error.update(req.body);
-      res.json(error);
+      res.json({ message: 'Erro atualizado com sucesso!'});
     } else {
-      res.status(404).json({ message: 'Error not found' });
+      res.status(404).json({ message: 'Erro não encontrado' });
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -56,9 +58,9 @@ router.delete('/:id', async (req, res) => {
     const error = await Error.findByPk(req.params.id);
     if (error) {
       await error.destroy();
-      res.json({ message: 'Error removido com sucesso!' });
+      res.json({ message: 'Erro removido com sucesso!' });
     } else {
-      res.status(404).json({ message: 'Error not found' });
+      res.status(404).json({ message: 'Erro não encontrado' });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
