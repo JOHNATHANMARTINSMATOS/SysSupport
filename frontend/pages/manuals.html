@@ -33,7 +33,7 @@
     </header>
     <main>
         <h2>Cadastro de Manuais</h2>
-        <form action="api/manuals" method="POST" enctype="multipart/form-data">
+        <form id="manualForm" method="POST" enctype="multipart/form-data">
             <label for="title">Título do Manual:</label>
             <input type="text" id="title" name="title" required><br><br>
             
@@ -48,6 +48,7 @@
             
             <input type="submit" value="Cadastrar Manual">
         </form>
+        <div id="message"></div>
     </main>
     <footer>
         <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
