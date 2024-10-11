@@ -12,8 +12,8 @@ function loadCategories() {
             categorySelect.innerHTML = '<option value="">Buscar por Categoria</option>';
             categories.forEach(category => {
                 const option = document.createElement('option');
-                option.value = category.name;
-                option.textContent = category.name;
+                option.value = category;
+                option.textContent = category;
                 categorySelect.appendChild(option);
             });
         })
@@ -31,15 +31,14 @@ function loadSubcategories() {
             .then(subcategories => {
                 subcategories.forEach(subcategory => {
                     const option = document.createElement('option');
-                    option.value = subcategory.name; // Ajuste conforme o nome do campo
-                    option.textContent = subcategory.name;
+                    option.value = subcategory;
+                    option.textContent = subcategory;
                     subcategorySelect.appendChild(option);
                 });
             })
             .catch(error => console.error('Erro ao carregar subcategorias:', error));
     }
 }
-
 
 function fetchErrors() {
     fetch('/api/errors')
