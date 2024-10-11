@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const { Op } = require('sequelize');
+const upload = require('../middleware/upload');
 const Error = db.Error;
 
 router.get('/', async (req, res) => {
@@ -21,12 +22,13 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Adicionar um novo erro (POST)
-router.post('/', async (req, res) => {
-    const { title, category, subcategory, description, responsible, resolutionDate, image } = req.body;
+// Criar um novo erro com upload de imagem (POST)
+router.post('/', upload.single('image'), async (req, res) => {
+    const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
 
     try {
-        const novoErro = await Error.create({
+        await Error.create({
             title,
             category,
             subcategory,
@@ -36,9 +38,9 @@ router.post('/', async (req, res) => {
             image
         });
 
-        res.status(201).json(novoErro);
+        res.status(201).json({ message: 'Erro cadastrado com sucesso!' });
     } catch (error) {
-        res.status(400).json({ message: 'Erro ao criar erro', error: error.message });
+        res.status(400).json({ message: error.message });
     }
 });
 
@@ -88,13 +90,23 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Editar erro
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
+    const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
+
     try {
         const error = await Error.findByPk(req.params.id);
         if (error) {
-            await error.update(req.body);
-            res.json({ message: 'Erro atualizado com sucesso' });
+            await error.update({
+                title,
+                category,
+                subcategory,
+                description,
+                responsible,
+                resolutionDate,
+                image
+            });
+            res.json({ message: 'Erro atualizado com sucesso!' });
         } else {
             res.status(404).json({ message: 'Erro não encontrado' });
         }
@@ -102,6 +114,7 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 // Excluir erro
 router.delete('/:id', async (req, res) => {
