@@ -6,14 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    Subcategory.associate = models => {
-      // Associação de Subcategory com Category
-      Subcategory.belongsTo(models.Category, { foreignKey: 'categoryId', as: 'category' });
-      
-      // Associação de Subcategory com Error
-      Subcategory.hasMany(models.Error, { foreignKey: 'subcategoryId', as: 'errors' });
-    };
-  
+    // Remova associações ao modelo Error
     return Subcategory;
   };
   

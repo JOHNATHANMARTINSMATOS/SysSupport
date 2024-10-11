@@ -4,8 +4,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    category: {
+      type: DataTypes.STRING, // Define como STRING ao invés de INTEGER
+      allowNull: false
+    },
+    subcategory: {
+      type: DataTypes.STRING // Define como STRING ao invés de INTEGER
+    },
     description: {
-      type: DataTypes.TEXT, // Usando TEXT para descrições longas
+      type: DataTypes.TEXT,
       allowNull: false
     },
     responsible: {
@@ -15,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     },
     image: {
-      type: DataTypes.STRING // Armazena o caminho para o arquivo de imagem
+      type: DataTypes.STRING
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -23,20 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  // Configuração das associações
-  Error.associate = models => {
-    // Associa Error a Category
-    Error.belongsTo(models.Category, {
-      foreignKey: 'categoryId',
-      as: 'category'
-    });
-
-    // Associa Error a Subcategory
-    Error.belongsTo(models.Subcategory, {
-      foreignKey: 'subcategoryId',
-      as: 'subcategory'
-    });
-  };
-
+  // Nenhuma associação adicional é necessária
   return Error;
 };

@@ -2,29 +2,24 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const Error = db.Error;
+
 router.get('/', async (req, res) => {
     const { category, subcategory, description } = req.query;
     const filters = {};
     
-    // Ajuste os filtros conforme os parâmetros recebidos
-    if (category) filters.categoryId = category;
-    if (subcategory) filters.subcategoryId = subcategory;
+    if (category) filters.category = { [Op.eq]: category };
+    if (subcategory) filters.subcategory = { [Op.eq]: subcategory };
     if (description) filters.description = { [Op.like]: `%${description}%` };
 
     try {
-        const errors = await db.Error.findAll({
-            where: filters,
-            include: [
-                { model: db.Category, as: 'category' },
-                { model: db.Subcategory, as: 'subcategory' }
-            ]
-        });
+        const errors = await db.Error.findAll({ where: filters });
         res.json(errors);
     } catch (error) {
         console.error('Erro ao buscar erros:', error);
         res.status(500).json({ message: 'Erro ao buscar erros.' });
     }
 });
+
 router.get('/categories', async (req, res) => {
     try {
         const categories = await db.Category.findAll({
