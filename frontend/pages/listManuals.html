@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>SysSupport - Lista de Manuais</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>SysSupport</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="errors.html">Erros</a></li>
+                <li><a href="listErrors.html">Lista de Erros</a></li>
+                <li><a href="manuals.html">Manuais</a></li>
+                <li><a href="scripts.html">Scripts SQL</a></li>
+                <li><a href="regimes.html">Regimes Tributários</a></li>
+                <li><a href="suggestions.html">Sugestões</a></li>
+                <li class="dropdown">
+                    <a href="#">Gestão Tributária</a>
+                    <ul class="dropdown-content">
+                        <li><a href="cst.html">CST</a></li>
+                        <li><a href="cfop.html">CFOP</a></li>
+                        <li><a href="ipi.html">IPI</a></li>
+                        <li><a href="cofins.html">COFINS</a></li>
+                        <li><a href="pis.html">PIS</a></li>
+                    </ul>
+                </li>
+                <li><a href="instructions.html">Instruções</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="table">
+        <h2>Lista de Manuais</h2>
+
+        <!-- Formulário de Filtros -->
+        <div class="filter-form">
+            <select id="categoryFilter" onchange="applyFilters()">
+                <option value="">Buscar por Categoria</option>
+            </select>
+            <input type="text" id="filterDescription" placeholder="Buscar na Descrição">
+            <button onclick="applyFilters()">Filtrar</button>
+            <button onclick="clearFilters()">Limpar Filtros</button>
+        </div>
+
+        <!-- Tabela de Manuais -->
+        <div class="table-container">
+            <table id="manualsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Categoria</th>
+                        <th>Descrição</th>
+                        <th>Arquivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados serão carregados aqui -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal de Visualização e Exclusão -->
+        <div id="manualModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle"></h2>
+                <p><strong>Categoria:</strong> <span id="modalCategory"></span></p>
+                <p><strong>Descrição:</strong></p>
+                <p id="modalDescription"></p>
+                <a id="modalFile" href="#" target="_blank" style="display: none;">Baixar Arquivo</a>
+                <button onclick="deleteManual()">Excluir</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="manual.js"></script>
+</body>
+</html>
