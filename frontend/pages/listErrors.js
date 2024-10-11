@@ -1,9 +1,11 @@
+// Carregar categorias, subcategorias e erros na inicialização da página
 document.addEventListener('DOMContentLoaded', () => {
     fetchErrors();
     loadCategories();
     loadSubcategories();
 });
 
+// Carregar categorias
 function loadCategories() {
     fetch('/api/errors/categories')
         .then(response => response.json())
@@ -20,6 +22,7 @@ function loadCategories() {
         .catch(error => console.error('Erro ao carregar categorias:', error));
 }
 
+// Carregar subcategorias
 function loadSubcategories() {
     fetch('/api/errors/subcategories')
         .then(response => response.json())
@@ -36,6 +39,7 @@ function loadSubcategories() {
         .catch(error => console.error('Erro ao carregar subcategorias:', error));
 }
 
+// Carregar erros na tabela
 function fetchErrors() {
     fetch('/api/errors')
         .then(response => response.json())
@@ -45,8 +49,6 @@ function fetchErrors() {
 
             errors.forEach(error => {
                 const row = document.createElement('tr');
-                
-                // Atribui o evento de clique à linha para abrir o modal com os detalhes
                 row.addEventListener('click', () => showErrorModal(error.id));
                 
                 row.innerHTML = `
@@ -65,6 +67,7 @@ function fetchErrors() {
         .catch(error => console.error('Erro ao buscar erros:', error));
 }
 
+// Aplicar filtros de categoria, subcategoria e descrição
 function applyFilters() {
     const category = document.getElementById('categoryFilter').value;
     const subcategory = document.getElementById('subcategoryFilter').value;
@@ -78,8 +81,6 @@ function applyFilters() {
 
             errors.forEach(error => {
                 const row = document.createElement('tr');
-                
-                // Atribui o evento de clique à linha para abrir o modal com os detalhes
                 row.addEventListener('click', () => showErrorModal(error.id));
                 
                 row.innerHTML = `
@@ -97,6 +98,7 @@ function applyFilters() {
         });
 }
 
+// Exibir modal com detalhes do erro
 function showErrorModal(id) {
     fetch(`/api/errors/${id}`)
         .then(response => response.json())
@@ -121,10 +123,12 @@ function showErrorModal(id) {
         });
 }
 
+// Fechar o modal
 function closeModal() {
     document.getElementById('errorModal').style.display = 'none';
 }
 
+// Excluir erro
 function deleteError() {
     const id = document.getElementById('errorModal').dataset.errorId;
     if (confirm('Tem certeza de que deseja excluir este erro?')) {
@@ -141,6 +145,7 @@ function deleteError() {
     }
 }
 
+// Editar erro
 function editError() {
     const id = document.getElementById('errorModal').dataset.errorId;
     fetch(`/api/errors/${id}`)
@@ -161,10 +166,11 @@ function editError() {
                 submitErrorForm('PUT');
             };
 
-            document.getElementById('errorModal').style.display = 'none';
+            closeModal();
         });
 }
 
+// Submeter o formulário de erro (usado tanto para POST quanto para PUT)
 function submitErrorForm(method) {
     const formData = new FormData(document.getElementById('errorForm'));
     const id = document.getElementById('errorId').value;
@@ -178,14 +184,15 @@ function submitErrorForm(method) {
     .then(data => {
         alert(method === 'PUT' ? 'Erro atualizado com sucesso!' : 'Erro cadastrado com sucesso!');
         document.getElementById('errorForm').reset();
-        fetchErrors(); // Recarrega a lista de erros
+        fetchErrors();
     })
     .catch(error => console.error('Erro ao salvar:', error));
 }
-// Função para limpar filtros
+
+// Limpar filtros
 function clearFilters() {
     document.getElementById('categoryFilter').value = '';
     document.getElementById('subcategoryFilter').value = '';
     document.getElementById('filterDescription').value = '';
-    fetchErrors(); // Recarrega todos os registros
+    fetchErrors();
 }
