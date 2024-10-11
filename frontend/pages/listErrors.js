@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchErrors();
     loadCategories();
+    loadSubcategories();
 });
 
 function loadCategories() {
