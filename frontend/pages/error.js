@@ -26,6 +26,6 @@ errorForm.addEventListener('submit', async function(event) {
             messageDiv.textContent = errorResult.message || 'Erro ao cadastrar o erro.';
         }
     } catch (error) {
-        messageDiv.textContent = 'Ocorreu um erro ao enviar o formulário.';
+        messageDiv.textContent = error.message || 'Ocorreu um erro ao enviar o formulário.';
     }
 });

@@ -21,6 +21,27 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Adicionar um novo erro (POST)
+router.post('/', async (req, res) => {
+    const { title, category, subcategory, description, responsible, resolutionDate, image } = req.body;
+
+    try {
+        const novoErro = await Error.create({
+            title,
+            category,
+            subcategory,
+            description,
+            responsible,
+            resolutionDate,
+            image
+        });
+
+        res.status(201).json(novoErro);
+    } catch (error) {
+        res.status(400).json({ message: 'Erro ao criar erro', error: error.message });
+    }
+});
+
 // Rota para listar categorias únicas
 router.get('/categories', async (req, res) => {
     try {
