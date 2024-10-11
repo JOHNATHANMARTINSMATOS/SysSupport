@@ -1,11 +1,9 @@
-// Carregar categorias, subcategorias e erros na inicialização da página
 document.addEventListener('DOMContentLoaded', () => {
     fetchErrors();
     loadCategories();
     loadSubcategories();
 });
 
-// Carregar categorias
 function loadCategories() {
     fetch('/api/errors/categories')
         .then(response => response.json())
@@ -22,7 +20,6 @@ function loadCategories() {
         .catch(error => console.error('Erro ao carregar categorias:', error));
 }
 
-// Carregar subcategorias
 function loadSubcategories() {
     fetch('/api/errors/subcategories')
         .then(response => response.json())
@@ -39,7 +36,6 @@ function loadSubcategories() {
         .catch(error => console.error('Erro ao carregar subcategorias:', error));
 }
 
-// Carregar erros na tabela
 function fetchErrors() {
     fetch('/api/errors')
         .then(response => response.json())
@@ -49,6 +45,8 @@ function fetchErrors() {
 
             errors.forEach(error => {
                 const row = document.createElement('tr');
+                
+                // Atribui o evento de clique à linha para abrir o modal com os detalhes
                 row.addEventListener('click', () => showErrorModal(error.id));
                 
                 row.innerHTML = `
@@ -67,20 +65,49 @@ function fetchErrors() {
         .catch(error => console.error('Erro ao buscar erros:', error));
 }
 
-// Exibir modal com detalhes do erro
+function applyFilters() {
+    const category = document.getElementById('categoryFilter').value;
+    const subcategory = document.getElementById('subcategoryFilter').value;
+    const description = document.getElementById('filterDescription').value.toLowerCase();
+
+    fetch(`/api/errors?category=${category}&subcategory=${subcategory}&description=${description}`)
+        .then(response => response.json())
+        .then(errors => {
+            const errorsTableBody = document.querySelector('#errorsTable tbody');
+            errorsTableBody.innerHTML = ''; 
+
+            errors.forEach(error => {
+                const row = document.createElement('tr');
+                
+                // Atribui o evento de clique à linha para abrir o modal com os detalhes
+                row.addEventListener('click', () => showErrorModal(error.id));
+                
+                row.innerHTML = `
+                    <td>${error.id}</td>
+                    <td>${error.title}</td>
+                    <td>${error.category}</td>
+                    <td>${error.subcategory}</td>
+                    <td>${error.description.substring(0, 20)}...</td>
+                    <td>${error.responsible}</td>
+                    <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
+                    <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
+                `;
+                errorsTableBody.appendChild(row);
+            });
+        });
+}
+
 function showErrorModal(id) {
     fetch(`/api/errors/${id}`)
         .then(response => response.json())
         .then(error => {
-            // Atualizar conteúdo do modal
             document.getElementById('modalTitle').textContent = error.title;
-            document.getElementById('title').value = error.title;
-            document.getElementById('category').value = error.category;
-            document.getElementById('subcategory').value = error.subcategory;
-            document.getElementById('description').value = error.description;
-            document.getElementById('responsible').value = error.responsible;
-            document.getElementById('resolutionDate').value = error.resolutionDate ? new Date(error.resolutionDate).toISOString().split('T')[0] : '';
-
+            document.getElementById('modalCategory').textContent = error.category;
+            document.getElementById('modalSubcategory').textContent = error.subcategory;
+            document.getElementById('modalDescription').textContent = error.description;
+            document.getElementById('modalResponsible').textContent = error.responsible;
+            document.getElementById('modalResolutionDate').textContent = error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : 'N/A';
+            
             const modalImage = document.getElementById('modalImage');
             if (error.image) {
                 modalImage.src = error.image;
@@ -91,16 +118,13 @@ function showErrorModal(id) {
 
             document.getElementById('errorModal').style.display = 'block';
             document.getElementById('errorModal').dataset.errorId = id;
-        })
-        .catch(error => console.error('Erro ao carregar detalhes do erro:', error));
+        });
 }
 
-// Fechar o modal
 function closeModal() {
     document.getElementById('errorModal').style.display = 'none';
 }
 
-// Excluir erro
 function deleteError() {
     const id = document.getElementById('errorModal').dataset.errorId;
     if (confirm('Tem certeza de que deseja excluir este erro?')) {
@@ -117,29 +141,28 @@ function deleteError() {
     }
 }
 
-// Submeter o formulário de erro (usado para PUT)
-function submitErrorForm(method) {
-    const formData = new FormData(document.getElementById('errorForm'));
-    const id = document.getElementById('errorId').value;
-    const url = method === 'PUT' ? `/api/errors/${id}` : '/api/errors';
-
-    fetch(url, {
-        method: method,
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(method === 'PUT' ? 'Erro atualizado com sucesso!' : 'Erro cadastrado com sucesso!');
-        document.getElementById('errorForm').reset();
-        fetchErrors();
-    })
-    .catch(error => console.error('Erro ao salvar:', error));
+function editError() {
+    const id = document.getElementById('errorModal').dataset.errorId;
+    const newDescription = prompt('Digite a nova descrição:');
+    if (newDescription) {
+        fetch(`/api/errors/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ description: newDescription })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Erro atualizado com sucesso!');
+            closeModal();
+            fetchErrors();
+        })
+        .catch(error => console.error('Erro ao atualizar:', error));
+    }
 }
-
-// Limpar filtros
+// Função para limpar filtros
 function clearFilters() {
     document.getElementById('categoryFilter').value = '';
     document.getElementById('subcategoryFilter').value = '';
     document.getElementById('filterDescription').value = '';
-    fetchErrors();
+    fetchErrors(); // Recarrega todos os registros
 }
