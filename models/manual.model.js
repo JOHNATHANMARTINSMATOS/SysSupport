@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       description: {
-        type: DataTypes.TEXT // Usando TEXT para permitir descrições longas
+        type: DataTypes.TEXT
       },
       file: {
-        type: DataTypes.STRING // Armazena o caminho para o arquivo anexado
+        type: DataTypes.STRING
       },
       createdAt: {
         type: DataTypes.DATE,

@@ -175,7 +175,7 @@ function editError() {
                 .then(data => {
                     alert('Erro atualizado com sucesso!');
                     closeModal();
-                    fetchErrors(); // Recarrega a lista de erros
+                    fetchErrors();
                 })
                 .catch(error => console.error('Erro ao atualizar:', error));
             } else {
@@ -189,5 +189,5 @@ function clearFilters() {
     document.getElementById('categoryFilter').value = '';
     document.getElementById('subcategoryFilter').value = '';
     document.getElementById('filterDescription').value = '';
-    fetchErrors(); // Recarrega todos os registros
+    fetchErrors();
 }
