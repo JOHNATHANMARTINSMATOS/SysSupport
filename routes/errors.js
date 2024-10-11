@@ -2,25 +2,29 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const Error = db.Error;
-
-// Listar erros com filtros
 router.get('/', async (req, res) => {
     const { category, subcategory, description } = req.query;
     const filters = {};
-  
+    
+    // Ajuste os filtros conforme os parâmetros recebidos
     if (category) filters.categoryId = category;
     if (subcategory) filters.subcategoryId = subcategory;
     if (description) filters.description = { [Op.like]: `%${description}%` };
 
     try {
-        const errors = await Error.findAll({ where: filters });
+        const errors = await db.Error.findAll({
+            where: filters,
+            include: [
+                { model: db.Category, as: 'category' },
+                { model: db.Subcategory, as: 'subcategory' }
+            ]
+        });
         res.json(errors);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Erro ao buscar erros:', error);
+        res.status(500).json({ message: 'Erro ao buscar erros.' });
     }
 });
-
-// Carregar categorias e subcategorias
 router.get('/categories', async (req, res) => {
     try {
         const categories = await db.Category.findAll({
@@ -28,19 +32,11 @@ router.get('/categories', async (req, res) => {
         });
         res.json(categories);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Erro ao carregar categorias:', error);
+        res.status(500).json({ message: 'Erro ao carregar categorias.' });
     }
 });
 
-router.get('/subcategories', async (req, res) => {
-    const categoryId = req.query.category;
-    try {
-        const subcategories = await db.Subcategory.findAll({ where: { categoryId } });
-        res.json(subcategories);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
 
 // Carregar erro por ID
 router.get('/:id', async (req, res) => {

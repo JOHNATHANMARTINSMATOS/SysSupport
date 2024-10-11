@@ -1,37 +1,38 @@
-// models/error.js
-
 module.exports = (sequelize, DataTypes) => {
-    const Error = sequelize.define('Error', {
+  const Error = sequelize.define('Error', {
       title: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      category: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      subcategory: {
-        type: DataTypes.STRING
+          type: DataTypes.STRING,
+          allowNull: false
       },
       description: {
-        type: DataTypes.TEXT, // Usando TEXT para descrições longas
-        allowNull: false
+          type: DataTypes.TEXT, // Usando TEXT para descrições longas
+          allowNull: false
       },
       responsible: {
-        type: DataTypes.STRING
+          type: DataTypes.STRING
       },
       resolutionDate: {
-        type: DataTypes.DATE
+          type: DataTypes.DATE
       },
       image: {
-        type: DataTypes.STRING // Armazena o caminho para o arquivo de imagem
+          type: DataTypes.STRING // Armazena o caminho para o arquivo de imagem
       },
       createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
+          type: DataTypes.DATE,
+          defaultValue: DataTypes.NOW
       }
-    });
-  
-    return Error;
+  });
+
+  Error.associate = models => {
+      Error.belongsTo(models.Category, {
+          foreignKey: 'categoryId',
+          as: 'category'
+      });
+      Error.belongsTo(models.Subcategory, {
+          foreignKey: 'subcategoryId',
+          as: 'subcategory'
+      });
   };
-  
+
+  return Error;
+};
