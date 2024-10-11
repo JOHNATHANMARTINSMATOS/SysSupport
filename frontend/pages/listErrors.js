@@ -143,21 +143,44 @@ function deleteError() {
 
 function editError() {
     const id = document.getElementById('errorModal').dataset.errorId;
-    const newDescription = prompt('Digite a nova descrição:');
-    if (newDescription) {
-        fetch(`/api/errors/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ description: newDescription })
-        })
+    fetch(`/api/errors/${id}`)
         .then(response => response.json())
-        .then(data => {
-            alert('Erro atualizado com sucesso!');
-            closeModal();
-            fetchErrors();
-        })
-        .catch(error => console.error('Erro ao atualizar:', error));
-    }
+        .then(error => {
+            document.getElementById('title').value = error.title;
+            document.getElementById('category').value = error.category;
+            document.getElementById('subcategory').value = error.subcategory;
+            document.getElementById('description').value = error.description;
+            document.getElementById('responsible').value = error.responsible;
+            document.getElementById('resolutionDate').value = error.resolutionDate ? new Date(error.resolutionDate).toISOString().split('T')[0] : '';
+            
+            const errorIdField = document.getElementById('errorId');
+            errorIdField.value = id;
+
+            document.getElementById('errorForm').onsubmit = function(event) {
+                event.preventDefault();
+                submitErrorForm('PUT');
+            };
+
+            document.getElementById('errorModal').style.display = 'none';
+        });
+}
+
+function submitErrorForm(method) {
+    const formData = new FormData(document.getElementById('errorForm'));
+    const id = document.getElementById('errorId').value;
+    const url = method === 'PUT' ? `/api/errors/${id}` : '/api/errors';
+
+    fetch(url, {
+        method: method,
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(method === 'PUT' ? 'Erro atualizado com sucesso!' : 'Erro cadastrado com sucesso!');
+        document.getElementById('errorForm').reset();
+        fetchErrors(); // Recarrega a lista de erros
+    })
+    .catch(error => console.error('Erro ao salvar:', error));
 }
 // Função para limpar filtros
 function clearFilters() {

@@ -74,15 +74,35 @@
             <div class="modal-content">
                 <span class="close-button" onclick="closeModal()">&times;</span>
                 <h2 id="modalTitle"></h2>
-                <p><strong>Categoria:</strong> <span id="modalCategory"></span></p>
-                <p><strong>Subcategoria:</strong> <span id="modalSubcategory"></span></p>
-                <p><strong>Descrição:</strong></p>
-                <p id="modalDescription"></p>
-                <p><strong>Responsável:</strong> <span id="modalResponsible"></span></p>
-                <p><strong>Data de Resolução:</strong> <span id="modalResolutionDate"></span></p>
-                <img id="modalImage" src="" alt="Imagem do Erro" style="display: none; width: 100%; max-width: 300px;">
+                
+                <!-- Formulário de edição completo -->
+                <form id="errorForm" enctype="multipart/form-data">
+                    <input type="hidden" id="errorId" name="errorId">
+                    
+                    <label for="title">Título:</label>
+                    <input type="text" id="title" name="title" required>
+                    
+                    <label for="category">Categoria:</label>
+                    <input type="text" id="category" name="category" required>
+
+                    <label for="subcategory">Subcategoria:</label>
+                    <input type="text" id="subcategory" name="subcategory" required>
+
+                    <label for="description">Descrição:</label>
+                    <textarea id="description" name="description" required></textarea>
+
+                    <label for="responsible">Responsável:</label>
+                    <input type="text" id="responsible" name="responsible" required>
+
+                    <label for="resolutionDate">Data de Resolução:</label>
+                    <input type="date" id="resolutionDate" name="resolutionDate" required>
+
+                    <label for="image">Imagem:</label>
+                    <input type="file" id="image" name="image">
+
+                    <button type="submit">Salvar</button>
+                </form>
                 <button onclick="deleteError()">Excluir</button>
-                <button onclick="editError()">Editar</button>
             </div>
         </div>
     </main>

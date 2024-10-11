@@ -4,7 +4,7 @@ const messageDiv = document.getElementById('message');
 
 // Adicionando um evento de escuta para o envio do formulário
 errorForm.addEventListener('submit', async function(event) {
-    event.preventDefault(); // Previne o envio padrão do formulário
+    event.preventDefault();
 
     // Captura os dados do formulário
     const formData = new FormData(errorForm);
@@ -26,6 +26,6 @@ errorForm.addEventListener('submit', async function(event) {
             messageDiv.textContent = errorResult.message || 'Erro ao cadastrar o erro.';
         }
     } catch (error) {
-        messageDiv.textContent = error.message || 'Ocorreu um erro ao enviar o formulário.';
+        messageDiv.textContent = 'Ocorreu um erro ao enviar o formulário.';
     }
 });

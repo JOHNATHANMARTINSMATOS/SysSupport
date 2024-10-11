@@ -90,13 +90,17 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Atualizar todas as informações de um erro específico
 router.put('/:id', upload.single('image'), async (req, res) => {
     const { title, category, subcategory, description, responsible, resolutionDate } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
 
     try {
+        // Encontra o erro pelo ID
         const error = await Error.findByPk(req.params.id);
+        
         if (error) {
+            // Atualiza todas as informações
             await error.update({
                 title,
                 category,
@@ -106,6 +110,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
                 resolutionDate,
                 image
             });
+            
             res.json({ message: 'Erro atualizado com sucesso!' });
         } else {
             res.status(404).json({ message: 'Erro não encontrado' });
@@ -114,7 +119,6 @@ router.put('/:id', upload.single('image'), async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-
 
 // Excluir erro
 router.delete('/:id', async (req, res) => {
