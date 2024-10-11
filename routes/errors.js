@@ -21,10 +21,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Rota para listar categorias e subcategorias únicas
+// Rota para listar categorias únicas
 router.get('/categories', async (req, res) => {
     try {
-        // Obtenha categorias únicas
         const categories = await db.Error.findAll({
             attributes: [[db.Sequelize.fn('DISTINCT', db.Sequelize.col('category')), 'category']],
             where: {
@@ -39,17 +38,13 @@ router.get('/categories', async (req, res) => {
     }
 });
 
+// Rota para listar subcategorias únicas
 router.get('/subcategories', async (req, res) => {
-    const { category } = req.query;
     try {
-        // Obtenha subcategorias únicas, filtrando por categoria, se fornecido
-        const whereClause = category ? { category } : {};
-
         const subcategories = await db.Error.findAll({
             attributes: [[db.Sequelize.fn('DISTINCT', db.Sequelize.col('subcategory')), 'subcategory']],
             where: {
-                ...whereClause,
-                subcategory: { [Op.ne]: null } // Exclui valores nulos
+                subcategory: { [Op.ne]: null }  // Exclui valores nulos
             }
         });
 
@@ -59,6 +54,7 @@ router.get('/subcategories', async (req, res) => {
         res.status(500).json({ message: 'Erro ao carregar subcategorias.' });
     }
 });
+
 
 // Carregar erro por ID
 router.get('/:id', async (req, res) => {

@@ -21,23 +21,19 @@ function loadCategories() {
 }
 
 function loadSubcategories() {
-    const selectedCategory = document.getElementById('categoryFilter').value;
-    const subcategorySelect = document.getElementById('subcategoryFilter');
-    subcategorySelect.innerHTML = '<option value="">Buscar por Subcategoria</option>';
-
-    if (selectedCategory) {
-        fetch(`/api/errors/subcategories?category=${encodeURIComponent(selectedCategory)}`)
-            .then(response => response.json())
-            .then(subcategories => {
-                subcategories.forEach(subcategory => {
-                    const option = document.createElement('option');
-                    option.value = subcategory;
-                    option.textContent = subcategory;
-                    subcategorySelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Erro ao carregar subcategorias:', error));
-    }
+    fetch('/api/errors/subcategories')
+        .then(response => response.json())
+        .then(subcategories => {
+            const subcategorySelect = document.getElementById('subcategoryFilter');
+            subcategorySelect.innerHTML = '<option value="">Buscar por Subcategoria</option>';
+            subcategories.forEach(subcategory => {
+                const option = document.createElement('option');
+                option.value = subcategory;
+                option.textContent = subcategory;
+                subcategorySelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro ao carregar subcategorias:', error));
 }
 
 function fetchErrors() {
@@ -162,4 +158,11 @@ function editError() {
         })
         .catch(error => console.error('Erro ao atualizar:', error));
     }
+}
+// Função para limpar filtros
+function clearFilters() {
+    document.getElementById('categoryFilter').value = '';
+    document.getElementById('subcategoryFilter').value = '';
+    document.getElementById('filterDescription').value = '';
+    fetchErrors(); // Recarrega todos os registros
 }
