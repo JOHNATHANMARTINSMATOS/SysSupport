@@ -37,12 +37,12 @@
 
         <!-- Formulário de Filtros -->
         <div class="filter-form">
-            <select id="categoryFilter" onchange="loadCategories()">
+            <select id="categoryFilter" onchange="loadSubcategories()">
                 <option value="">Buscar por Categoria</option>
             </select>
-            <select id="subcategoryFilter" onchange="loadSubcategories()">
+            <select id="subcategoryFilter">
                 <option value="">Buscar por Subcategoria</option>
-            </select>
+            </select>            
             <input type="text" id="filterDescription" placeholder="Buscar na Descrição">
             <button onclick="applyFilters()">Filtrar</button>
             <button onclick="clearFilters()">Limpar Filtros</button>

@@ -12,7 +12,7 @@ function loadCategories() {
             categorySelect.innerHTML = '<option value="">Buscar por Categoria</option>';
             categories.forEach(category => {
                 const option = document.createElement('option');
-                option.value = category.id;
+                option.value = category.name;
                 option.textContent = category.name;
                 categorySelect.appendChild(option);
             });
@@ -21,17 +21,17 @@ function loadCategories() {
 }
 
 function loadSubcategories() {
-    const categoryId = document.getElementById('categoryFilter').value;
+    const selectedCategory = document.getElementById('categoryFilter').value;
     const subcategorySelect = document.getElementById('subcategoryFilter');
     subcategorySelect.innerHTML = '<option value="">Buscar por Subcategoria</option>';
 
-    if (categoryId) {
-        fetch(`/api/errors/subcategories?category=${categoryId}`)
+    if (selectedCategory) {
+        fetch(`/api/errors/subcategories?category=${encodeURIComponent(selectedCategory)}`)
             .then(response => response.json())
             .then(subcategories => {
                 subcategories.forEach(subcategory => {
                     const option = document.createElement('option');
-                    option.value = subcategory.id;
+                    option.value = subcategory.name; // Ajuste conforme o nome do campo
                     option.textContent = subcategory.name;
                     subcategorySelect.appendChild(option);
                 });
@@ -39,6 +39,7 @@ function loadSubcategories() {
             .catch(error => console.error('Erro ao carregar subcategorias:', error));
     }
 }
+
 
 function fetchErrors() {
     fetch('/api/errors')
