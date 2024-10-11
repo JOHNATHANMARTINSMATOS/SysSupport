@@ -67,49 +67,20 @@ function fetchErrors() {
         .catch(error => console.error('Erro ao buscar erros:', error));
 }
 
-// Aplicar filtros de categoria, subcategoria e descrição
-function applyFilters() {
-    const category = document.getElementById('categoryFilter').value;
-    const subcategory = document.getElementById('subcategoryFilter').value;
-    const description = document.getElementById('filterDescription').value.toLowerCase();
-
-    fetch(`/api/errors?category=${category}&subcategory=${subcategory}&description=${description}`)
-        .then(response => response.json())
-        .then(errors => {
-            const errorsTableBody = document.querySelector('#errorsTable tbody');
-            errorsTableBody.innerHTML = ''; 
-
-            errors.forEach(error => {
-                const row = document.createElement('tr');
-                row.addEventListener('click', () => showErrorModal(error.id));
-                
-                row.innerHTML = `
-                    <td>${error.id}</td>
-                    <td>${error.title}</td>
-                    <td>${error.category}</td>
-                    <td>${error.subcategory}</td>
-                    <td>${error.description.substring(0, 20)}...</td>
-                    <td>${error.responsible}</td>
-                    <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
-                    <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
-                `;
-                errorsTableBody.appendChild(row);
-            });
-        });
-}
-
 // Exibir modal com detalhes do erro
 function showErrorModal(id) {
     fetch(`/api/errors/${id}`)
         .then(response => response.json())
         .then(error => {
+            // Atualizar conteúdo do modal
             document.getElementById('modalTitle').textContent = error.title;
-            document.getElementById('modalCategory').textContent = error.category;
-            document.getElementById('modalSubcategory').textContent = error.subcategory;
-            document.getElementById('modalDescription').textContent = error.description;
-            document.getElementById('modalResponsible').textContent = error.responsible;
-            document.getElementById('modalResolutionDate').textContent = error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : 'N/A';
-            
+            document.getElementById('title').value = error.title;
+            document.getElementById('category').value = error.category;
+            document.getElementById('subcategory').value = error.subcategory;
+            document.getElementById('description').value = error.description;
+            document.getElementById('responsible').value = error.responsible;
+            document.getElementById('resolutionDate').value = error.resolutionDate ? new Date(error.resolutionDate).toISOString().split('T')[0] : '';
+
             const modalImage = document.getElementById('modalImage');
             if (error.image) {
                 modalImage.src = error.image;
@@ -120,7 +91,8 @@ function showErrorModal(id) {
 
             document.getElementById('errorModal').style.display = 'block';
             document.getElementById('errorModal').dataset.errorId = id;
-        });
+        })
+        .catch(error => console.error('Erro ao carregar detalhes do erro:', error));
 }
 
 // Fechar o modal
@@ -145,32 +117,7 @@ function deleteError() {
     }
 }
 
-// Editar erro
-function editError() {
-    const id = document.getElementById('errorModal').dataset.errorId;
-    fetch(`/api/errors/${id}`)
-        .then(response => response.json())
-        .then(error => {
-            document.getElementById('title').value = error.title;
-            document.getElementById('category').value = error.category;
-            document.getElementById('subcategory').value = error.subcategory;
-            document.getElementById('description').value = error.description;
-            document.getElementById('responsible').value = error.responsible;
-            document.getElementById('resolutionDate').value = error.resolutionDate ? new Date(error.resolutionDate).toISOString().split('T')[0] : '';
-            
-            const errorIdField = document.getElementById('errorId');
-            errorIdField.value = id;
-
-            document.getElementById('errorForm').onsubmit = function(event) {
-                event.preventDefault();
-                submitErrorForm('PUT');
-            };
-
-            closeModal();
-        });
-}
-
-// Submeter o formulário de erro (usado tanto para POST quanto para PUT)
+// Submeter o formulário de erro (usado para PUT)
 function submitErrorForm(method) {
     const formData = new FormData(document.getElementById('errorForm'));
     const id = document.getElementById('errorId').value;
