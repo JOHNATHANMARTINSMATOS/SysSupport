@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de CFOPs e Descrições</title>
+    <link rel="stylesheet" href="styleTrib.css">
+</head>
+<body>
+    <header>
+        <h1>SysSupport</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="errors.html">Erros</a></li>
+                <li><a href="listErrors.html">Lista de Erros</a></li>
+                <li><a href="manuals.html">Manuais</a></li>
+                <li><a href="scripts.html">Scripts SQL</a></li>
+                <li><a href="regimes.html">Regimes Tributários</a></li>
+                <li><a href="suggestions.html">Sugestões</a></li>
+                <li class="dropdown">
+                    <a href="#">Gestão Tributária</a>
+                    <ul class="dropdown-content">
+                        <li><a href="cst.html">CST</a></li>
+                        <li><a href="cfop.html">CFOP</a></li>
+                        <li><a href="ipi.html">IPI</a></li>
+                        <li><a href="cofins.html">COFINS</a></li>
+                        <li><a href="pis.html">PIS</a></li>
+                    </ul>
+                </li>
+                <li><a href="instructions.html">Instruções</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<main>
+    <h2>Lista de CFOPs e Descrições</h2>
+    <div class="container">
+        <div class="filter-form">
+            <input type="text" id="searchBar" placeholder="Filtrar CFOP ou Descrição...">
+        </div>
+        
+        <div class="table-container">
+            <table id="cfopTable">
+                <thead>
+                    <tr>
+                        <th>CFOP</th>
+                        <th>Descrição</th>
+                        <th>Origem/Destino</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <!-- Entradas de produtos e serviços -->
+<tr><th>1102</th><td>Compra para comercialização - Compra de produtos, de fornecedor do seu estado, sem substituição tributária</td><td>Mesmo estado</td></tr>
+<tr><th>2102</th><td>Compra para comercialização - Compra de produtos, de fornecedor de outro estado, sem substituição tributária</td><td>Outro estado</td></tr>
+<tr><th>2403</th><td>Compra para comercialização em operação com mercadoria sujeita ao regime de substituição tributária</td><td>Outro estado</td></tr>
+<tr><th>2556</th><td>Compra de produtos para uso ou consumo - Compra de produtos de fornecedor de outro estado, destinados ao consumo</td><td>Outro estado</td></tr>
+<tr><th>2551</th><td>Compra de bem para o ativo imobilizado - Produtos para o ativo da empresa, de fornecedor de outro estado</td><td>Outro estado</td></tr>
+
+<!-- Entradas de bens recebidos por comodato, mostruário, e consignação -->
+<tr><th>1908</th><td>Entrada de bem por contrato de comodato - Recebido sem custos, pode ser retirado pelo fornecedor do mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>1912</th><td>Entrada de mercadoria recebida para demonstração ou mostruário</td><td>Mesmo estado</td></tr>
+<tr><th>1917</th><td>Entrada de mercadoria em consignação mercantil ou industrial para venda futura</td><td>Mesmo estado</td></tr>
+<tr><th>2908</th><td>Entrada de bem por contrato de comodato - Recebido sem custos, pode ser retirado pelo fornecedor de outro estado</td><td>Outro estado</td></tr>
+<tr><th>2912</th><td>Entrada de mercadoria para demonstração ou mostruário</td><td>Outro estado</td></tr>
+
+<!-- Devoluções de mercadorias -->
+<tr><th>2411</th><td>Devolução de venda com substituição tributária - Produto vendido com ST devolvido de outro estado</td><td>Outro estado</td></tr>
+<tr><th>2202</th><td>Devolução de venda de mercadoria sem substituição tributária - Produto devolvido de cliente em outro estado</td><td>Outro estado</td></tr>
+<tr><th>1202</th><td>Devolução de venda de mercadoria sem substituição tributária - Produto devolvido de cliente no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>1411</th><td>Devolução de venda com substituição tributária - Produto vendido com ST devolvido de cliente do mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>2553</th><td>Devolução de venda de bem do ativo imobilizado - Produto devolvido para cliente em outro estado</td><td>Outro estado</td></tr>
+<tr><th>1553</th><td>Devolução de venda de bem do ativo imobilizado - Produto devolvido para cliente do mesmo estado</td><td>Mesmo estado</td></tr>
+
+<!-- Retornos e transferências -->
+<tr><th>1904</th><td>Retorno de remessa para venda fora do estabelecimento - Mercadoria retorna após exposição ou venda externa no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>2904</th><td>Retorno de remessa para venda fora do estabelecimento - Mercadoria retorna após exposição ou venda externa em outro estado</td><td>Outro estado</td></tr>
+<tr><th>1554</th><td>Retorno de bem do ativo imobilizado para uso fora do estabelecimento - Retorno de bem enviado para uso em outro local, no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>2554</th><td>Retorno de bem do ativo imobilizado para uso fora do estabelecimento - Retorno de bem enviado para uso em outro local, de outro estado</td><td>Outro estado</td></tr>
+
+<!-- Operações com armazém geral e comodato -->
+<tr><th>1906</th><td>Retorno de mercadoria remetida para armazém geral - Produto retorna ao estoque de armazém no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>2906</th><td>Retorno de mercadoria remetida para armazém geral - Produto retorna ao estoque de armazém em outro estado</td><td>Outro estado</td></tr>
+
+<!-- Vendas para comercialização -->
+<tr><th>5102</th><td>Venda de mercadoria adquirida ou recebida de terceiros - Venda para cliente do mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6102</th><td>Venda de mercadoria adquirida ou recebida de terceiros - Venda para cliente de outro estado</td><td>Outro estado</td></tr>
+<tr><th>5403</th><td>Venda de mercadoria sujeita a substituição tributária - Venda realizada no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6404</th><td>Venda de mercadoria com imposto retido anteriormente - Venda para outro estado</td><td>Outro estado</td></tr>
+
+<!-- Operações especiais e transferências -->
+<tr><th>5922</th><td>Simples faturamento para entrega futura - Mercadoria faturada para cliente no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6922</th><td>Simples faturamento para entrega futura - Mercadoria faturada para cliente em outro estado</td><td>Outro estado</td></tr>
+
+<!-- Remessas e devoluções -->
+<tr><th>5910</th><td>Remessa em bonificação, doação ou brinde - Envio de mercadoria sem fins comerciais no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6910</th><td>Remessa em bonificação, doação ou brinde - Envio de mercadoria sem fins comerciais em outro estado</td><td>Outro estado</td></tr>
+<tr><th>5556</th><td>Devolução de compra de material de uso ou consumo - Devolução de material sem substituição tributária no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6556</th><td>Devolução de compra de material de uso ou consumo - Devolução de material sem substituição tributária de outro estado</td><td>Outro estado</td></tr>
+<tr><th>5202</th><td>Devolução de compra para comercialização - Devolução de produto para fornecedor do mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6202</th><td>Devolução de compra para comercialização - Devolução de produto para fornecedor de outro estado</td><td>Outro estado</td></tr>
+
+<!-- Devoluções de mercadorias em consignação, bonificação, e retornos -->
+<tr><th>5917</th><td>Remessa de mercadoria em consignação mercantil ou industrial - Mercadoria enviada em consignação para venda no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6917</th><td>Remessa de mercadoria em consignação mercantil ou industrial - Mercadoria enviada em consignação para venda em outro estado</td><td>Outro estado</td></tr>
+<tr><th>1909</th><td>Retorno de bem remetido por contrato de comodato - Bem devolvido ao fornecedor no mesmo estado após o uso</td><td>Mesmo estado</td></tr>
+<tr><th>2909</th><td>Retorno de bem remetido por contrato de comodato - Bem devolvido ao fornecedor de outro estado após o uso</td><td>Outro estado</td></tr>
+<tr><th>5904</th><td>Remessa para venda fora do estabelecimento - Envio de mercadoria para venda fora do estabelecimento, no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6904</th><td>Remessa para venda fora do estabelecimento - Envio de mercadoria para venda fora do estabelecimento, em outro estado</td><td>Outro estado</td></tr>
+
+<!-- Transferências de bens do ativo e materiais de consumo -->
+<tr><th>5552</th><td>Transferência de bem do ativo imobilizado - Transferência de bens para uso interno, no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6552</th><td>Transferência de bem do ativo imobilizado - Transferência de bens para uso interno, em outro estado</td><td>Outro estado</td></tr>
+<tr><th>5557</th><td>Transferência de material de uso ou consumo - Transferência de material de consumo para filial no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6557</th><td>Transferência de material de uso ou consumo - Transferência de material de consumo para filial em outro estado</td><td>Outro estado</td></tr>
+
+<!-- Devoluções para o ativo imobilizado e consumo -->
+<tr><th>5412</th><td>Devolução de bem do ativo imobilizado em regime de substituição tributária - Retorno para fornecedor no mesmo estado com ST</td><td>Mesmo estado</td></tr>
+<tr><th>6412</th><td>Devolução de bem do ativo imobilizado em regime de substituição tributária - Retorno para fornecedor de outro estado com ST</td><td>Outro estado</td></tr>
+<tr><th>5556</th><td>Devolução de compra de material de uso ou consumo - Retorno de materiais para fornecedor no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6556</th><td>Devolução de compra de material de uso ou consumo - Retorno de materiais para fornecedor de outro estado</td><td>Outro estado</td></tr>
+
+<!-- Saídas e devoluções relacionadas a bonificações, brindes e serviços -->
+<tr><th>5910</th><td>Remessa em bonificação, doação ou brinde - Envio de itens para brindes ou bonificações no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6910</th><td>Remessa em bonificação, doação ou brinde - Envio de itens para brindes ou bonificações em outro estado</td><td>Outro estado</td></tr>
+<tr><th>6206</th><td>Anulação de valor relativo a aquisição de serviço de transporte - Cancelamento de frete com fornecedor de outro estado</td><td>Outro estado</td></tr>
+<tr><th>5206</th><td>Anulação de valor relativo a aquisição de serviço de transporte - Cancelamento de frete com fornecedor do mesmo estado</td><td>Mesmo estado</td></tr>
+
+<!-- Remessas e transferências de materiais para exposições, feiras e reparos -->
+<tr><th>5914</th><td>Remessa de mercadoria ou bem para exposição ou feira - Envio de material para exibição no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6914</th><td>Remessa de mercadoria ou bem para exposição ou feira - Envio de material para exibição em outro estado</td><td>Outro estado</td></tr>
+<tr><th>5915</th><td>Remessa de mercadoria para conserto ou reparo - Envio de material para reparos no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6915</th><td>Remessa de mercadoria para conserto ou reparo - Envio de material para reparos em outro estado</td><td>Outro estado</td></tr>
+<tr><th>5912</th><td>Remessa de mercadoria ou bem para demonstração ou mostruário - Envio de material para demonstração no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6912</th><td>Remessa de mercadoria ou bem para demonstração ou mostruário - Envio de material para demonstração em outro estado</td><td>Outro estado</td></tr>
+
+<!-- Saídas para consignação -->
+<tr><th>5110</th><td>Venda de mercadoria destinada à Zona Franca de Manaus ou Áreas de Livre Comércio - Venda no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6110</th><td>Venda de mercadoria destinada à Zona Franca de Manaus ou Áreas de Livre Comércio - Venda para outro estado</td><td>Outro estado</td></tr>
+<tr><th>5117</th><td>Venda de mercadoria encomendada para entrega futura - Venda com entrega programada no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6117</th><td>Venda de mercadoria encomendada para entrega futura - Venda com entrega programada em outro estado</td><td>Outro estado</td></tr>
+<tr><th>5119</th><td>Venda de mercadoria entregue ao destinatário em venda à ordem - Venda com entrega direta no cliente final, no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6119</th><td>Venda de mercadoria entregue ao destinatário em venda à ordem - Venda com entrega direta no cliente final, em outro estado</td><td>Outro estado</td></tr>
+
+<!-- Devoluções e remessas em consignação -->
+<tr><th>5919</th><td>Devolução simbólica de mercadoria em consignação mercantil - Devolução de consignação no mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6919</th><td>Devolução simbólica de mercadoria em consignação mercantil - Devolução de consignação em outro estado</td><td>Outro estado</td></tr>
+<tr><th>5918</th><td>Devolução de mercadoria em consignação mercantil ou industrial - Devolução de consignação para o mesmo estado</td><td>Mesmo estado</td></tr>
+<tr><th>6918</th><td>Devolução de mercadoria em consignação mercantil ou industrial - Devolução de consignação para outro estado</td><td>Outro estado</td></tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    document.getElementById('searchBar').addEventListener('input', function() {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#cfopTable tbody tr');
+        let hasResults = false;
+
+        rows.forEach(row => {
+            const cfop = row.cells[0].textContent.toLowerCase();
+            const description = row.cells[1].textContent.toLowerCase();
+
+            if (cfop.includes(searchValue) || description.includes(searchValue)) {
+                row.style.display = '';
+                hasResults = true;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Adiciona uma linha "Nenhum resultado encontrado" caso não tenha resultados
+        if (!hasResults) {
+            const noResultsRow = document.createElement('tr');
+            noResultsRow.classList.add('no-results');
+            noResultsRow.innerHTML = '<td colspan="2">Nenhum resultado encontrado</td>';
+            document.querySelector('#cfopTable tbody').appendChild(noResultsRow);
+        } else {
+            const noResultsRow = document.querySelector('.no-results');
+            if (noResultsRow) noResultsRow.remove();
+        }
+    });
+</script>
+
+</body>
+</html>
