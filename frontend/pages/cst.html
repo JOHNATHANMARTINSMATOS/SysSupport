@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de CSTs e Descrições</title>
+    <link rel="stylesheet" href="styleTrib.css">
+</head>
+
+<body>
+    <header>
+        <h1>SysSupport</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="errors.html">Erros</a></li>
+                <li><a href="listErrors.html">Lista de Erros</a></li>
+                <li><a href="manuals.html">Manuais</a></li>
+                <li><a href="scripts.html">Scripts SQL</a></li>
+                <li><a href="regimes.html">Regimes Tributários</a></li>
+                <li><a href="suggestions.html">Sugestões</a></li>
+                <li class="dropdown">
+                    <a href="#">Gestão Tributária</a>
+                    <ul class="dropdown-content">
+                        <li><a href="cst.html">CST</a></li>
+                        <li><a href="cfop.html">CFOP</a></li>
+                        <li><a href="ipi.html">IPI</a></li>
+                        <li><a href="cofins.html">COFINS</a></li>
+                        <li><a href="pis.html">PIS</a></li>
+                    </ul>
+                </li>
+                <li><a href="instructions.html">Instruções</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Lista de CSTs e Descrições</h2>
+        <div class="container">
+            <div class="filter-form">
+                <input type="text" id="searchBar" placeholder="Filtrar CST ou Descrição...">
+            </div>
+
+            <div class="table-container">
+                <h3>CST - Regime Normal</h3>
+                <table id="cstTable">
+                    <thead>
+                        <tr>
+                            <th>CST</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>00</th>
+                            <td>Tributada integralmente</td>
+                        </tr>
+                        <tr>
+                            <th>10</th>
+                            <td>Tributada e com cobrança de ICMS por substituição tributária</td>
+                        </tr>
+                        <tr>
+                            <th>20</th>
+                            <td>Com redução de base de cálculo</td>
+                        </tr>
+                        <tr>
+                            <th>30</th>
+                            <td>Isenta ou não tributada e com cobrança de ICMS por substituição tributária</td>
+                        </tr>
+                        <tr>
+                            <th>40</th>
+                            <td>Isenta</td>
+                        </tr>
+                        <tr>
+                            <th>41</th>
+                            <td>Não tributada</td>
+                        </tr>
+                        <tr>
+                            <th>50</th>
+                            <td>Suspensão</td>
+                        </tr>
+                        <tr>
+                            <th>51</th>
+                            <td>Diferimento</td>
+                        </tr>
+                        <tr>
+                            <th>60</th>
+                            <td>ICMS cobrado anteriormente por substituição tributária</td>
+                        </tr>
+                        <tr>
+                            <th>70</th>
+                            <td>Com redução de base de cálculo e cobrança do ICMS por substituição tributária</td>
+                        </tr>
+                        <tr>
+                            <th>90</th>
+                            <td>Outras</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>CST - Simples Nacional</h3>
+                <table id="cstSimplesTable">
+                    <thead>
+                        <tr>
+                            <th>CST</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>101</th>
+                            <td>Tributada pelo Simples Nacional com permissão de crédito</td>
+                        </tr>
+                        <tr>
+                            <th>102</th>
+                            <td>Tributada pelo Simples Nacional sem permissão de crédito</td>
+                        </tr>
+                        <tr>
+                            <th>103</th>
+                            <td>Isenção de ICMS para faixa de receita bruta</td>
+                        </tr>
+                        <tr>
+                            <th>201</th>
+                            <td>Tributada pelo Simples Nacional com permissão de crédito e com redução de base de cálculo</td>
+                        </tr>
+                        <tr>
+                            <th>202</th>
+                            <td>Tributada pelo Simples Nacional sem permissão de crédito e com redução de base de cálculo</td>
+                        </tr>
+                        <tr>
+                            <th>203</th>
+                            <td>Isenção de ICMS para faixa de receita bruta com redução de base de cálculo</td>
+                        </tr>
+                        <tr>
+                            <th>300</th>
+                            <td>Imune</td>
+                        </tr>
+                        <tr>
+                            <th>400</th>
+                            <td>Não tributada pelo Simples Nacional</td>
+                        </tr>
+                        <tr>
+                            <th>500</th>
+                            <td>ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação</td>
+                        </tr>
+                        <tr>
+                            <th>900</th>
+                            <td>Outros</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById('searchBar').addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase();
+            const rowsNormal = document.querySelectorAll('#cstTable tbody tr');
+            const rowsSimples = document.querySelectorAll('#cstSimplesTable tbody tr');
+            let hasResults = false;
+
+            const filterRows = rows => {
+                rows.forEach(row => {
+                    const cst = row.cells[0].textContent.toLowerCase();
+                    const description = row.cells[1].textContent.toLowerCase();
+
+                    if (cst.includes(searchValue) || description.includes(searchValue)) {
+                        row.style.display = '';
+                        hasResults = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            };
+
+            filterRows(rowsNormal);
+            filterRows(rowsSimples);
+
+            const noResultsRow = document.querySelector('.no-results');
+            if (!hasResults) {
+                if (!noResultsRow) {
+                    const noResults = document.createElement('tr');
+                    noResults.classList.add('no-results');
+                    noResults.innerHTML = '<td colspan="2">Nenhum resultado encontrado</td>';
+                    document.querySelector('#cstTable tbody').appendChild(noResults);
+                    document.querySelector('#cstSimplesTable tbody').appendChild(noResults.cloneNode(true));
+                }
+            } else {
+                if (noResultsRow) noResultsRow.remove();
+            }
+        });
+    </script>
+</body>
+
+</html>
