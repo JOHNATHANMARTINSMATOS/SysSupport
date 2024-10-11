@@ -143,21 +143,46 @@ function deleteError() {
 
 function editError() {
     const id = document.getElementById('errorModal').dataset.errorId;
-    const newDescription = prompt('Digite a nova descrição:');
-    if (newDescription) {
-        fetch(`/api/errors/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ description: newDescription })
-        })
+
+    // Primeiro, obtemos os dados atuais do erro
+    fetch(`/api/errors/${id}`)
         .then(response => response.json())
-        .then(data => {
-            alert('Erro atualizado com sucesso!');
-            closeModal();
-            fetchErrors();
+        .then(error => {
+            // Exibe o prompt com os valores existentes como valores iniciais
+            const newTitle = prompt('Digite o novo título:', error.title);
+            const newCategory = prompt('Digite a nova categoria:', error.category);
+            const newSubcategory = prompt('Digite a nova subcategoria:', error.subcategory);
+            const newDescription = prompt('Digite a nova descrição:', error.description);
+            const newResponsible = prompt('Digite o novo responsável:', error.responsible);
+            const newResolutionDate = prompt('Digite a nova data de resolução (AAAA-MM-DD):', error.resolutionDate ? error.resolutionDate.split('T')[0] : '');
+
+            // Verificar se todos os campos foram preenchidos
+            if (newTitle && newCategory && newSubcategory && newDescription && newResponsible && newResolutionDate) {
+                // Atualizar o erro com os novos valores
+                fetch(`/api/errors/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: newTitle,
+                        category: newCategory,
+                        subcategory: newSubcategory,
+                        description: newDescription,
+                        responsible: newResponsible,
+                        resolutionDate: newResolutionDate
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Erro atualizado com sucesso!');
+                    closeModal();
+                    fetchErrors(); // Recarrega a lista de erros
+                })
+                .catch(error => console.error('Erro ao atualizar:', error));
+            } else {
+                alert('Por favor, preencha todos os campos para atualizar o erro.');
+            }
         })
-        .catch(error => console.error('Erro ao atualizar:', error));
-    }
+        .catch(error => console.error('Erro ao obter dados do erro:', error));
 }
 // Função para limpar filtros
 function clearFilters() {
