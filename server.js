@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 // Importando e registrando as rotas
-const routes = ['errors', 'manuals', 'scripts', 'regimes', 'suggestions', 'cst', 'cfop', 'ipi', 'cofins', 'pis', 'instructions'];
+const routes = ['errors', 'manuals', 'scripts', 'suggestions', 'cst', 'cfop', 'ipi', 'cofins', 'pis', 'instructions'];
 routes.forEach(route => {
   app.use(`/api/${route}`, require(`./routes/${route}`));
 });

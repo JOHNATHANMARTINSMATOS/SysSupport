@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de PIS e Descrições</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>SysSupport</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Erros</a>
+                    <ul class="dropdown-content">
+                        <li><a href="errors.html">Cadastrar Erro</a></li>
+                        <li><a href="listErrors.html">Lista de Erros</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Manuais</a>
+                    <ul class="dropdown-content">
+                        <li><a href="manuals.html">Cadastrar Manual</a></li>
+                        <li><a href="listManuals.html">Lista de Manuais</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Scripts SQL</a>
+                    <ul class="dropdown-content">
+                        <li><a href="scripts.html">Cadastrar Script</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Regimes Tributários</a>
+                    <ul class="dropdown-content">
+                        <li><a href="regimes.html">Regimes Tributários</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Sugestões</a>
+                    <ul class="dropdown-content">
+                        <li><a href="suggestions.html">Enviar Sugestão</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Gestão Tributária</a>
+                    <ul class="dropdown-content">
+                        <li><a href="cst.html">CST</a></li>
+                        <li><a href="cfop.html">CFOP</a></li>
+                        <li><a href="ipi.html">IPI</a></li>
+                        <li><a href="cofins.html">COFINS</a></li>
+                        <li><a href="pis.html">PIS</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Instruções</a>
+                    <ul class="dropdown-content">
+                        <li><a href="instructions.html">Instruções Gerais</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Lista de PIS e Descrições</h2>
+        <div class="container">
+            <div class="filter-form">
+                <input type="text" id="searchBar" placeholder="Filtrar PIS ou Descrição...">
+            </div>
+
+            <div class="table-container">
+                <table id="pisTable">
+                    <thead>
+                        <tr>
+                            <th>Código PIS</th>
+                            <th>Descrição</th>
+                            <th>Regime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Exemplos de PIS - Simples Nacional -->
+                        <tr>
+                            <td>01</td>
+                            <td>Tributada pelo Simples Nacional com permissão de crédito</td>
+                            <td>Simples Nacional</td>
+                        </tr>
+                        <tr>
+                            <td>02</td>
+                            <td>Tributada pelo Simples Nacional sem permissão de crédito</td>
+                            <td>Simples Nacional</td>
+                        </tr>
+                        <tr>
+                            <td>03</td>
+                            <td>Isenção de PIS para faixa de receita bruta</td>
+                            <td>Simples Nacional</td>
+                        </tr>
+                        <tr>
+                            <td>04</td>
+                            <td>Tributada pelo Simples Nacional com permissão de crédito e com redução de base de cálculo</td>
+                            <td>Simples Nacional</td>
+                        </tr>
+                        <tr>
+                            <td>05</td>
+                            <td>Tributada pelo Simples Nacional sem permissão de crédito e com redução de base de cálculo</td>
+                            <td>Simples Nacional</td>
+                        </tr>
+
+                        <!-- PIS - Regime Normal -->
+                        <tr>
+                            <td>06</td>
+                            <td>Tributada no regime normal com permissão de crédito</td>
+                            <td>Regime Normal</td>
+                        </tr>
+                        <tr>
+                            <td>07</td>
+                            <td>Tributada no regime normal sem permissão de crédito</td>
+                            <td>Regime Normal</td>
+                        </tr>
+                        <tr>
+                            <td>08</td>
+                            <td>Isenção de PIS - empresa optante do regime normal</td>
+                            <td>Regime Normal</td>
+                        </tr>
+                        <tr>
+                            <td>09</td>
+                            <td>Suspensão de PIS no regime normal</td>
+                            <td>Regime Normal</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>ICMS cobrado anteriormente por substituição tributária</td>
+                            <td>Regime Normal</td>
+                        </tr>
+
+                        <!-- PIS - Outras Operações -->
+                        <tr>
+                            <td>49</td>
+                            <td>Outras operações de saídas não tributadas pelo PIS</td>
+                            <td>Outras Operações</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>Operação de exportação de mercadoria ou serviço</td>
+                            <td>Outras Operações</td>
+                        </tr>
+                        <tr>
+                            <td>51</td>
+                            <td>Operação com mercadoria enviada para a Zona Franca de Manaus</td>
+                            <td>Outras Operações</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>Devolução de venda para industrialização ou comercialização</td>
+                            <td>Outras Operações</td>
+                        </tr>
+                        <tr>
+                            <td>53</td>
+                            <td>Devolução de venda para ativo imobilizado</td>
+                            <td>Outras Operações</td>
+                        </tr>
+
+                        <!-- Mais exemplos podem ser adicionados aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SysSupport. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById('searchBar').addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase();
+            const searchWords = searchValue.split(' ').map(word => removeDiacritics(word));
+            const rows = document.querySelectorAll('#pisTable tbody tr');
+            let hasResults = false;
+
+            rows.forEach(row => {
+                const pis = removeDiacritics(row.cells[0].textContent.toLowerCase());
+                const description = removeDiacritics(row.cells[1].textContent.toLowerCase());
+
+                const matches = searchWords.every(word => 
+                    pis.includes(word) || description.includes(word)
+                );
+
+                if (matches) {
+                    row.style.display = '';
+                    hasResults = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            const noResultsRow = document.querySelector('.no-results');
+            if (!hasResults) {
+                if (!noResultsRow) {
+                    const newRow = document.createElement('tr');
+                    newRow.classList.add('no-results');
+                    newRow.innerHTML = '<td colspan="3">Nenhum resultado encontrado</td>';
+                    document.querySelector('#pisTable tbody').appendChild(newRow);
+                }
+            } else if (noResultsRow) {
+                noResultsRow.remove();
+            }
+        });
+
+        function removeDiacritics(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+    </script>
+
+</body>
+
+</html>
