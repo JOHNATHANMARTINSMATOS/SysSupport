@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de CFOPs e Descrições</title>
-    <link rel="stylesheet" href="styleTrib.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
@@ -13,13 +13,38 @@
         <nav>
             <ul>
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="errors.html">Erros</a></li>
-                <li><a href="listErrors.html">Lista de Erros</a></li>
-                <li><a href="manuals.html">Manuais</a></li>
-                <li><a href="listManuals.html">Lista de Manuais</a></li>
-                <li><a href="scripts.html">Scripts SQL</a></li>
-                <li><a href="regimes.html">Regimes Tributários</a></li>
-                <li><a href="suggestions.html">Sugestões</a></li>
+                <li class="dropdown">
+                    <a href="#">Erros</a>
+                    <ul class="dropdown-content">
+                        <li><a href="errors.html">Cadastrar Erro</a></li>
+                        <li><a href="listErrors.html">Lista de Erros</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Manuais</a>
+                    <ul class="dropdown-content">
+                        <li><a href="manuals.html">Cadastrar Manual</a></li>
+                        <li><a href="listManuals.html">Lista de Manuais</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Scripts SQL</a>
+                    <ul class="dropdown-content">
+                        <li><a href="scripts.html">Cadastrar Script</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Regimes Tributários</a>
+                    <ul class="dropdown-content">
+                        <li><a href="regimes.html">Regimes Tributários</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Sugestões</a>
+                    <ul class="dropdown-content">
+                        <li><a href="suggestions.html">Enviar Sugestão</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a href="#">Gestão Tributária</a>
                     <ul class="dropdown-content">
@@ -30,11 +55,15 @@
                         <li><a href="pis.html">PIS</a></li>
                     </ul>
                 </li>
-                <li><a href="instructions.html">Instruções</a></li>
+                <li class="dropdown">
+                    <a href="#">Instruções</a>
+                    <ul class="dropdown-content">
+                        <li><a href="instructions.html">Instruções Gerais</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
-
     <main>
         <h2>Lista de CFOPs e Descrições</h2>
         <div class="container">
@@ -516,34 +545,49 @@
     </footer>
 
     <script>
-        document.getElementById('searchBar').addEventListener('input', function () {
-            const searchValue = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#cfopTable tbody tr');
-            let hasResults = false;
+      document.getElementById('searchBar').addEventListener('input', function () {
+    const searchValue = this.value.toLowerCase();
+    const searchWords = searchValue.split(' ').map(word => removeDiacritics(word)); // Normaliza o input
+    const rows = document.querySelectorAll('#cfopTable tbody tr');
+    let hasResults = false;
 
-            rows.forEach(row => {
-                const cfop = row.cells[0].textContent.toLowerCase();
-                const description = row.cells[1].textContent.toLowerCase();
+    rows.forEach(row => {
+        const cfop = removeDiacritics(row.cells[0].textContent.toLowerCase());
+        const description = removeDiacritics(row.cells[1].textContent.toLowerCase());
+        
+        // Verifica se todas as palavras da busca estão presentes na linha
+        const matches = searchWords.every(word => 
+            cfop.includes(word) || description.includes(word)
+        );
 
-                if (cfop.includes(searchValue) || description.includes(searchValue)) {
-                    row.style.display = '';
-                    hasResults = true;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+        if (matches) {
+            row.style.display = '';
+            hasResults = true;
+        } else {
+            row.style.display = 'none';
+        }
+    });
 
-            // Adiciona uma linha "Nenhum resultado encontrado" caso não tenha resultados
-            if (!hasResults) {
-                const noResultsRow = document.createElement('tr');
-                noResultsRow.classList.add('no-results');
-                noResultsRow.innerHTML = '<td colspan="2">Nenhum resultado encontrado</td>';
-                document.querySelector('#cfopTable tbody').appendChild(noResultsRow);
-            } else {
-                const noResultsRow = document.querySelector('.no-results');
-                if (noResultsRow) noResultsRow.remove();
-            }
-        });
+    // Adiciona uma linha "Nenhum resultado encontrado" caso não tenha resultados
+    const noResultsRow = document.querySelector('.no-results');
+    if (!hasResults) {
+        if (!noResultsRow) {
+            const newRow = document.createElement('tr');
+            newRow.classList.add('no-results');
+            newRow.innerHTML = '<td colspan="3">Nenhum resultado encontrado</td>'; // Atualizado para abranger todas as colunas
+            document.querySelector('#cfopTable tbody').appendChild(newRow);
+        }
+    } else if (noResultsRow) {
+        noResultsRow.remove();
+    }
+});
+
+// Função para remover acentos e caracteres especiais
+function removeDiacritics(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+
     </script>
 
 </body>

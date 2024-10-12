@@ -46,7 +46,7 @@ function fetchManuals() {
 
 function applyFilters() {
     const category = document.getElementById('categoryFilter').value;
-    const description = document.getElementById('filterDescription').value.toLowerCase();
+    const description = removeDiacritics(document.getElementById('filterDescription').value.toLowerCase());
 
     fetch(`/api/manuals?category=${category}&description=${description}`)
         .then(response => response.json())
@@ -55,20 +55,30 @@ function applyFilters() {
             manualsTableBody.innerHTML = ''; 
 
             manuals.forEach(manual => {
-                const row = document.createElement('tr');
-                
-                row.addEventListener('click', () => showManualModal(manual.id));
-                
-                row.innerHTML = `
-                    <td>${manual.id}</td>
-                    <td>${manual.title}</td>
-                    <td>${manual.category}</td>
-                    <td>${manual.description ? manual.description.substring(0, 20) + '...' : ''}</td>
-                    <td><a href="${manual.file}" target="_blank">Baixar</a></td>
-                `;
-                manualsTableBody.appendChild(row);
+                // Normaliza e remove os diacríticos da descrição do manual para a comparação
+                const normalizedDescription = removeDiacritics(manual.description ? manual.description.toLowerCase() : '');
+
+                if (normalizedDescription.includes(description)) {
+                    const row = document.createElement('tr');
+                    
+                    row.addEventListener('click', () => showManualModal(manual.id));
+                    
+                    row.innerHTML = `
+                        <td>${manual.id}</td>
+                        <td>${manual.title}</td>
+                        <td>${manual.category}</td>
+                        <td>${manual.description ? manual.description.substring(0, 20) + '...' : ''}</td>
+                        <td><a href="${manual.file}" target="_blank">Baixar</a></td>
+                    `;
+                    manualsTableBody.appendChild(row);
+                }
             });
         });
+}
+
+// Função para remover acentos e caracteres especiais
+function removeDiacritics(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function showManualModal(id) {

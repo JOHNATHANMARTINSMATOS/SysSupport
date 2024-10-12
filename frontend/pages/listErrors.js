@@ -68,7 +68,7 @@ function fetchErrors() {
 function applyFilters() {
     const category = document.getElementById('categoryFilter').value;
     const subcategory = document.getElementById('subcategoryFilter').value;
-    const description = document.getElementById('filterDescription').value.toLowerCase();
+    const description = removeDiacritics(document.getElementById('filterDescription').value.toLowerCase());
 
     fetch(`/api/errors?category=${category}&subcategory=${subcategory}&description=${description}`)
         .then(response => response.json())
@@ -77,24 +77,34 @@ function applyFilters() {
             errorsTableBody.innerHTML = ''; 
 
             errors.forEach(error => {
-                const row = document.createElement('tr');
-                
-                // Atribui o evento de clique à linha para abrir o modal com os detalhes
-                row.addEventListener('click', () => showErrorModal(error.id));
-                
-                row.innerHTML = `
-                    <td>${error.id}</td>
-                    <td>${error.title}</td>
-                    <td>${error.category}</td>
-                    <td>${error.subcategory}</td>
-                    <td>${error.description.substring(0, 20)}...</td>
-                    <td>${error.responsible}</td>
-                    <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
-                    <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
-                `;
-                errorsTableBody.appendChild(row);
+                // Normaliza e remove os diacríticos da descrição do erro para a comparação
+                const normalizedDescription = removeDiacritics(error.description.toLowerCase());
+
+                if (normalizedDescription.includes(description)) {
+                    const row = document.createElement('tr');
+                    
+                    // Atribui o evento de clique à linha para abrir o modal com os detalhes
+                    row.addEventListener('click', () => showErrorModal(error.id));
+                    
+                    row.innerHTML = `
+                        <td>${error.id}</td>
+                        <td>${error.title}</td>
+                        <td>${error.category}</td>
+                        <td>${error.subcategory}</td>
+                        <td>${error.description.substring(0, 20)}...</td>
+                        <td>${error.responsible}</td>
+                        <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
+                        <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
+                    `;
+                    errorsTableBody.appendChild(row);
+                }
             });
         });
+}
+
+// Função para remover acentos e caracteres especiais
+function removeDiacritics(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function showErrorModal(id) {

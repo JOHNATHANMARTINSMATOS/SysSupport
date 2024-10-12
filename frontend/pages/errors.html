@@ -1,24 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>SysSupport - Erros</title>
     <link rel="stylesheet" href="../styles.css">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com;">
 </head>
+
 <body>
     <header>
         <h1>SysSupport</h1>
         <nav>
             <ul>
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="errors.html">Erros</a></li>
-                <li><a href="listErrors.html">Lista de Erros</a></li>
-                <li><a href="manuals.html">Manuais</a></li>
-                <li><a href="listManuals.html">Lista de Manuais</a></li>
-                <li><a href="scripts.html">Scripts SQL</a></li>
-                <li><a href="regimes.html">Regimes Tributários</a></li>
-                <li><a href="suggestions.html">Sugestões</a></li>
+                <li class="dropdown">
+                    <a href="#">Erros</a>
+                    <ul class="dropdown-content">
+                        <li><a href="errors.html">Cadastrar Erro</a></li>
+                        <li><a href="listErrors.html">Lista de Erros</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Manuais</a>
+                    <ul class="dropdown-content">
+                        <li><a href="manuals.html">Cadastrar Manual</a></li>
+                        <li><a href="listManuals.html">Lista de Manuais</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Scripts SQL</a>
+                    <ul class="dropdown-content">
+                        <li><a href="scripts.html">Cadastrar Script</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Regimes Tributários</a>
+                    <ul class="dropdown-content">
+                        <li><a href="regimes.html">Regimes Tributários</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Sugestões</a>
+                    <ul class="dropdown-content">
+                        <li><a href="suggestions.html">Enviar Sugestão</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a href="#">Gestão Tributária</a>
                     <ul class="dropdown-content">
@@ -29,7 +56,12 @@
                         <li><a href="pis.html">PIS</a></li>
                     </ul>
                 </li>
-                <li><a href="instructions.html">Instruções</a></li>
+                <li class="dropdown">
+                    <a href="#">Instruções</a>
+                    <ul class="dropdown-content">
+                        <li><a href="instructions.html">Instruções Gerais</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
@@ -38,25 +70,25 @@
         <form id="errorForm" enctype="multipart/form-data">
             <label for="title">Título do Erro:</label>
             <input type="text" id="title" name="title" required><br><br>
-            
+
             <label for="category">Categoria:</label>
             <input type="text" id="category" name="category" required><br><br>
-            
+
             <label for="subcategory">Subcategoria:</label>
             <input type="text" id="subcategory" name="subcategory"><br><br>
-            
+
             <label for="description">Descrição:</label><br>
             <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
-            
+
             <label for="responsible">Pessoa Responsável:</label>
             <input type="text" id="responsible" name="responsible"><br><br>
-            
+
             <label for="resolutionDate">Data de Resolução:</label>
             <input type="date" id="resolutionDate" name="resolutionDate"><br><br>
-            
+
             <label for="image">Anexar Imagem:</label>
             <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png"><br><br>
-            
+
             <input type="submit" value="Cadastrar Erro">
         </form>
         <div id="message"></div>
@@ -66,4 +98,5 @@
     </footer>
     <script src="error.js"></script>
 </body>
+
 </html>
