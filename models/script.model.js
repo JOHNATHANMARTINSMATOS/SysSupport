@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       script: {
-        type: DataTypes.TEXT, // Usando TEXT para armazenar scripts potencialmente longos
+        type: DataTypes.TEXT,
         allowNull: false
       },
       createdAt: {

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       rate: {
-        type: DataTypes.FLOAT, // Campo para alíquota, utilizando FLOAT para decimais
+        type: DataTypes.FLOAT,
         allowNull: false
       },
       createdAt: {
