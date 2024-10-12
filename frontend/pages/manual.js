@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchManuals();
     loadCategories();
+
+    // Adiciona o evento de input para filtrar dinamicamente
+    document.getElementById('filterDescription').addEventListener('input', applyFilters);
+    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
 });
+
+let cachedManuals = []; // Armazena a lista de manuais carregada inicialmente
 
 function loadCategories() {
     fetch('/api/manuals/categories')
@@ -23,57 +29,45 @@ function fetchManuals() {
     fetch('/api/manuals')
         .then(response => response.json())
         .then(manuals => {
-            const manualsTableBody = document.querySelector('#manualsTable tbody');
-            manualsTableBody.innerHTML = ''; 
-
-            manuals.forEach(manual => {
-                const row = document.createElement('tr');
-                
-                row.addEventListener('click', () => showManualModal(manual.id));
-                
-                row.innerHTML = `
-                    <td>${manual.id}</td>
-                    <td>${manual.title}</td>
-                    <td>${manual.category}</td>
-                    <td>${manual.description ? manual.description.substring(0, 20) + '...' : ''}</td>
-                    <td><a href="${manual.file}" target="_blank">Baixar</a></td>
-                `;
-                manualsTableBody.appendChild(row);
-            });
+            cachedManuals = manuals; // Armazena a lista completa de manuais carregada inicialmente
+            renderManuals(manuals);
         })
         .catch(error => console.error('Erro ao buscar manuais:', error));
+}
+
+function renderManuals(manuals) {
+    const manualsTableBody = document.querySelector('#manualsTable tbody');
+    manualsTableBody.innerHTML = ''; 
+
+    manuals.forEach(manual => {
+        const row = document.createElement('tr');
+        
+        row.addEventListener('click', () => showManualModal(manual.id));
+        
+        row.innerHTML = `
+            <td>${manual.id}</td>
+            <td>${manual.title}</td>
+            <td>${manual.category}</td>
+            <td>${manual.description ? manual.description.substring(0, 20) + '...' : ''}</td>
+            <td><a href="${manual.file}" target="_blank">Baixar</a></td>
+        `;
+        manualsTableBody.appendChild(row);
+    });
 }
 
 function applyFilters() {
     const category = document.getElementById('categoryFilter').value;
     const description = removeDiacritics(document.getElementById('filterDescription').value.toLowerCase());
 
-    fetch(`/api/manuals?category=${category}&description=${description}`)
-        .then(response => response.json())
-        .then(manuals => {
-            const manualsTableBody = document.querySelector('#manualsTable tbody');
-            manualsTableBody.innerHTML = ''; 
+    const filteredManuals = cachedManuals.filter(manual => {
+        const matchesCategory = category === '' || manual.category === category;
+        const normalizedDescription = removeDiacritics(manual.description ? manual.description.toLowerCase() : '');
+        const matchesDescription = description === '' || normalizedDescription.includes(description);
 
-            manuals.forEach(manual => {
-                // Normaliza e remove os diacríticos da descrição do manual para a comparação
-                const normalizedDescription = removeDiacritics(manual.description ? manual.description.toLowerCase() : '');
+        return matchesCategory && matchesDescription;
+    });
 
-                if (normalizedDescription.includes(description)) {
-                    const row = document.createElement('tr');
-                    
-                    row.addEventListener('click', () => showManualModal(manual.id));
-                    
-                    row.innerHTML = `
-                        <td>${manual.id}</td>
-                        <td>${manual.title}</td>
-                        <td>${manual.category}</td>
-                        <td>${manual.description ? manual.description.substring(0, 20) + '...' : ''}</td>
-                        <td><a href="${manual.file}" target="_blank">Baixar</a></td>
-                    `;
-                    manualsTableBody.appendChild(row);
-                }
-            });
-        });
+    renderManuals(filteredManuals);
 }
 
 // Função para remover acentos e caracteres especiais
@@ -159,5 +153,5 @@ manualForm.addEventListener('submit', async function(event) {
 function clearFilters() {
     document.getElementById('categoryFilter').value = '';
     document.getElementById('filterDescription').value = '';
-    fetchManuals();
+    renderManuals(cachedManuals); // Restaura a tabela para a lista completa de manuais
 }

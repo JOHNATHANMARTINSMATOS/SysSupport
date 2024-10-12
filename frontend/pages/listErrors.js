@@ -2,7 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchErrors();
     loadCategories();
     loadSubcategories();
+
+    // Adiciona os eventos de input e change para a filtragem dinâmica
+    document.getElementById('filterDescription').addEventListener('input', applyFilters);
+    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+    document.getElementById('subcategoryFilter').addEventListener('change', applyFilters);
 });
+
+let cachedErrors = []; // Armazena a lista de erros carregada inicialmente
 
 function loadCategories() {
     fetch('/api/errors/categories')
@@ -40,29 +47,34 @@ function fetchErrors() {
     fetch('/api/errors')
         .then(response => response.json())
         .then(errors => {
-            const errorsTableBody = document.querySelector('#errorsTable tbody');
-            errorsTableBody.innerHTML = ''; 
-
-            errors.forEach(error => {
-                const row = document.createElement('tr');
-                
-                // Atribui o evento de clique à linha para abrir o modal com os detalhes
-                row.addEventListener('click', () => showErrorModal(error.id));
-                
-                row.innerHTML = `
-                    <td>${error.id}</td>
-                    <td>${error.title}</td>
-                    <td>${error.category}</td>
-                    <td>${error.subcategory}</td>
-                    <td>${error.description.substring(0, 20)}...</td>
-                    <td>${error.responsible}</td>
-                    <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
-                    <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
-                `;
-                errorsTableBody.appendChild(row);
-            });
+            cachedErrors = errors; // Armazena a lista completa de erros carregada inicialmente
+            renderErrors(errors);
         })
         .catch(error => console.error('Erro ao buscar erros:', error));
+}
+
+function renderErrors(errors) {
+    const errorsTableBody = document.querySelector('#errorsTable tbody');
+    errorsTableBody.innerHTML = ''; 
+
+    errors.forEach(error => {
+        const row = document.createElement('tr');
+        
+        // Atribui o evento de clique à linha para abrir o modal com os detalhes
+        row.addEventListener('click', () => showErrorModal(error.id));
+        
+        row.innerHTML = `
+            <td>${error.id}</td>
+            <td>${error.title}</td>
+            <td>${error.category}</td>
+            <td>${error.subcategory}</td>
+            <td>${error.description.substring(0, 20)}...</td>
+            <td>${error.responsible}</td>
+            <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
+            <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
+        `;
+        errorsTableBody.appendChild(row);
+    });
 }
 
 function applyFilters() {
@@ -70,36 +82,16 @@ function applyFilters() {
     const subcategory = document.getElementById('subcategoryFilter').value;
     const description = removeDiacritics(document.getElementById('filterDescription').value.toLowerCase());
 
-    fetch(`/api/errors?category=${category}&subcategory=${subcategory}&description=${description}`)
-        .then(response => response.json())
-        .then(errors => {
-            const errorsTableBody = document.querySelector('#errorsTable tbody');
-            errorsTableBody.innerHTML = ''; 
+    const filteredErrors = cachedErrors.filter(error => {
+        const matchesCategory = category === '' || error.category === category;
+        const matchesSubcategory = subcategory === '' || error.subcategory === subcategory;
+        const normalizedDescription = removeDiacritics(error.description.toLowerCase());
+        const matchesDescription = description === '' || normalizedDescription.includes(description);
 
-            errors.forEach(error => {
-                // Normaliza e remove os diacríticos da descrição do erro para a comparação
-                const normalizedDescription = removeDiacritics(error.description.toLowerCase());
+        return matchesCategory && matchesSubcategory && matchesDescription;
+    });
 
-                if (normalizedDescription.includes(description)) {
-                    const row = document.createElement('tr');
-                    
-                    // Atribui o evento de clique à linha para abrir o modal com os detalhes
-                    row.addEventListener('click', () => showErrorModal(error.id));
-                    
-                    row.innerHTML = `
-                        <td>${error.id}</td>
-                        <td>${error.title}</td>
-                        <td>${error.category}</td>
-                        <td>${error.subcategory}</td>
-                        <td>${error.description.substring(0, 20)}...</td>
-                        <td>${error.responsible}</td>
-                        <td>${error.resolutionDate ? new Date(error.resolutionDate).toLocaleDateString() : ''}</td>
-                        <td><img src="${error.image}" alt="Imagem do Erro" style="width: 50px; height: auto;"></td>
-                    `;
-                    errorsTableBody.appendChild(row);
-                }
-            });
-        });
+    renderErrors(filteredErrors);
 }
 
 // Função para remover acentos e caracteres especiais
@@ -154,11 +146,9 @@ function deleteError() {
 function editError() {
     const id = document.getElementById('errorModal').dataset.errorId;
 
-    // Primeiro, obtemos os dados atuais do erro
     fetch(`/api/errors/${id}`)
         .then(response => response.json())
         .then(error => {
-            // Exibe o prompt com os valores existentes como valores iniciais
             const newTitle = prompt('Digite o novo título:', error.title);
             const newCategory = prompt('Digite a nova categoria:', error.category);
             const newSubcategory = prompt('Digite a nova subcategoria:', error.subcategory);
@@ -166,9 +156,7 @@ function editError() {
             const newResponsible = prompt('Digite o novo responsável:', error.responsible);
             const newResolutionDate = prompt('Digite a nova data de resolução (AAAA-MM-DD):', error.resolutionDate ? error.resolutionDate.split('T')[0] : '');
 
-            // Verificar se todos os campos foram preenchidos
             if (newTitle && newCategory && newSubcategory && newDescription && newResponsible && newResolutionDate) {
-                // Atualizar o erro com os novos valores
                 fetch(`/api/errors/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -194,10 +182,11 @@ function editError() {
         })
         .catch(error => console.error('Erro ao obter dados do erro:', error));
 }
+
 // Função para limpar filtros
 function clearFilters() {
     document.getElementById('categoryFilter').value = '';
     document.getElementById('subcategoryFilter').value = '';
     document.getElementById('filterDescription').value = '';
-    fetchErrors();
+    renderErrors(cachedErrors);
 }

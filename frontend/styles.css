@@ -116,7 +116,7 @@ nav ul li a:hover::after {
 
 /* Estilo da página */
 main {
-    max-width: 900px;
+    max-width: 950px;
     margin: 2rem auto;
     padding: 2rem;
     background: #fff;
